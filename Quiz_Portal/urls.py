@@ -17,10 +17,12 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('core.urls')),  # Route homepage to the core app
+    path('admin/', admin.site.urls),  # Admin panel
+    path('', include('core.urls')),  # Routes homepage to the core app
+    path('blog/', include('blog.urls')),  # Routes '/blog/' to the blog app
 ]
