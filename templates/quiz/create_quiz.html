@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/quiz.css' %}">
+{% endblock %}
+
+{% block title %}Create a New Quiz{% endblock %}
+
+{% block nav_items %}
+    <li><a href="{% url 'quiz_home' %}">Quizzes</a></li>
+    <li><a href="#">Profile</a></li>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Create a New Quiz</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+        <!-- Quiz Title -->
+        <div class="form-group">
+            <label for="title">Quiz Title</label>
+            <input type="text" name="title" id="title" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea name="description" id="description" class="form-control" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="quiz_type">Quiz Type</label>
+            <select name="quiz_type" id="quiz_type" class="form-control" required>
+                <option value="public">Public</option>
+                <option value="private">Private</option>
+            </select>
+        </div>
+        <!-- Show password input only if quiz is private -->
+        <div class="form-group" id="password-field" style="display:none;">
+            <label for="password">Password (for private quiz)</label>
+            <input type="password" name="password" id="password" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="duration">Duration</label>
+            <div class="d-flex">
+                <input type="number" name="duration_hours" id="duration_hours" class="form-control mr-2" placeholder="HH" required>
+                <input type="number" name="duration_minutes" id="duration_minutes" class="form-control mr-2" placeholder="MM" required>
+                <input type="number" name="duration_seconds" id="duration_seconds" class="form-control" placeholder="SS" required>
+            </div>
+        </div>
+        <!-- Expiry Date -->
+        <div class="form-group">
+            <label for="expiry_date">Expiry Date</label>
+            <input type="datetime-local" name="expiry_date" id="expiry_date" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="tags">Select a Tag</label>
+            <select name="tags" id="tags" class="form-control" required>
+                <option value="other">other</option>
+                <option value="math">math</option>
+                <option value="science">science</option>
+                <option value="programming">programming</option>
+                <option value="history">history</option>
+                <option value="literature">literature</option>
+                <option value="geography">geography</option>
+            </select>
+        </div>
+        <div class="form-check">
+            <input type="checkbox" name="can_view_score" id="can_view_score" class="form-check-input">
+            <label class="form-check-label" for="can_view_score">Can View Score Immediately</label>
+        </div>
+        <button type="submit" class="btn btn-primary">Create Quiz</button>
+    </form>
+</div>
+
+{% block scripts %}
+<script>
+    // Show password input only for private quiz type
+    document.getElementById('quiz_type').addEventListener('change', function() {
+        var passwordField = document.getElementById('password-field');
+        if (this.value === 'private') {
+            passwordField.style.display = 'block';
+        } else {
+            passwordField.style.display = 'none';
+        }
+    });
+
+    // Trigger change event to set initial state
+    document.getElementById('quiz_type').dispatchEvent(new Event('change'));
+</script>
+{% endblock %}
+
+{% endblock %}
+

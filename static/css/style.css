@@ -1,9 +1,101 @@
-body{
-    background-color: red;
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+/* Navbar */
+.navbar {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+}
+.navbar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.navbar .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #fff;
+    text-decoration: none;
+}
+.navbar .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 15px;
+}
+.navbar .nav-links li {
+    display: inline;
+}
+.navbar .nav-links a {
+    color: #fff;
+    text-decoration: none;
+    padding: 5px 10px;
+}
+.navbar .nav-links a:hover {
+    background-color: #0056b3;
+    border-radius: 5px;
+}
+
+/* Hero Section */
+.hero {
+    text-align: center;
+    padding: 50px 20px;
+    background-color: #e9ecef;
+    margin-bottom: 20px;
+}
+.hero h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+.hero p {
+    font-size: 1.2rem;
+}
+
+/* Description Section */
+.description {
+    padding: 20px;
+    background-color: #fff;
+    margin: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.description h2 {
+    text-align: center;
+    margin-bottom: 15px;
+}
+.description p {
+    text-align: center;
+    font-size: 1rem;
+}
+
+/* Footer */
+.footer {
+    background-color: #343a40;
+    color: #fff;
+    text-align: center;
+    padding: 10px 20px;
+    margin-top: auto; /* Push the footer to the bottom */
+}
+.footer p {
+    margin: 5px 0;
+    font-size: 0.9rem;
 }
 .sample-image {
     display: block;
     margin-left: auto;
     margin-right: auto;
-    width: 50%;
+    width: 40%;
+    border-radius: 15px;
 }

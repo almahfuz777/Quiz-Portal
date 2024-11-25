@@ -1,16 +1,24 @@
-<!DOCTYPE html>
+{% extends 'base.html' %}
 {% load static %}
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <link rel="stylesheet" href="{% static 'css/style.css' %}">
-        <title>Home | Quiz Portal</title>
-    </head>
-    <body>
-        <h1 align="center">Welcome To Quiz Portal!</h1>
-        <img class="sample-image" src="{% static 'images/sample_image.jpg' %}" alt="Sample Image">
-        {% comment %} <script src="index.js"></script> {% endcomment %}
-    </body>
-</html>
+
+{% block title %}Home | Quiz Portal{% endblock %}
+
+{% block nav_items %}
+    <li><a href="{% url 'login' %}">Login</a></li>
+    <li><a href="{% url 'signup' %}">Sign Up</a></li>
+{% endblock %}
+
+{% block content %}
+<header class="hero">
+    <h1>Welcome to Quiz Portal</h1>
+    <p>Your one-stop platform to Create Quizzes and Participate!</p>
+</header>
+
+<section class="description">
+    <div class="container">
+        {% comment %} <h2>About Quiz Portal</h2> {% endcomment %}
+        <p>Quiz Portal allows you to create quizzes and share them with others.<br> Whether you want to test your own knowledge or challenge your friends,<br> you can create quizzes that are either private or open to the public. <br>Join the fun and discover new quizzes to test your skills!<br><br></p>
+    </div>
+    <img class="sample-image" src="{% static 'images/sample_image.jpg' %}" alt="sample Image">
+</section>
+{% endblock %}

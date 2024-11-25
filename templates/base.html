@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% block meta %}{% endblock %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block styles %}{% endblock %}
+    <title>{% block title %}Quiz Portal{% endblock %}</title>
+</head>
+<body>
+    {% if messages %}
+    <div class="alert alert-success">
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% block navbar %}
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="{% url 'homepage' %}" class="logo">Quiz Portal</a>
+            <ul class="nav-links">
+                {% block nav_items %}
+                <!--  nav items can go here -->
+                {% endblock %}
+            </ul>
+        </div>
+    </nav>
+    {% endblock %}
+
+    <!-- Main Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    {% block footer %}
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Quiz Portal. All rights reserved.</p>
+            <p>Contact us: you wish!</p>
+        </div>
+    </footer>
+    {% endblock %}
+    {% comment %} <script src="{% static 'js/script.js' %}"></script> {% endcomment %}
+
+</body>
+</html>
