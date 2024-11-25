@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     # created apps
     'core',
     'blog',
-    
+    'quiz',
 ]
 
 MIDDLEWARE = [

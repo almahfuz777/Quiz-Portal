@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/quiz.css' %}">
+{% endblock %}
+
+{% block title %}Quiz Home{% endblock %}
+
+{% block nav_items %}
+    <li><a href="{% url 'create_quiz' %}">Create Quiz</a></li>
+    <li><a href="#">Profile</a></li>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    
+    <!-- Filter Form (Side by Side) -->
+    <h3>Filter Quizzes:</h3>
+
+    <form method="get" class="filter-form d-flex">
+        <div class="filter-item">
+            <label for="quiz_type">Filter by Type:</label>
+            <select name="quiz_type" id="quiz_type">
+                <option value="">All</option>
+                <option value="public">Public</option>
+                <option value="private">Private</option>
+            </select>
+        </div>
+        <div class="filter-item">
+            <label for="tag">Filter by Tag:</label>
+            <select name="quiz_type" id="quiz_type">
+                <option value="">All</option>
+                <option value="math">math</option>
+                <option value="science">science</option>
+                <option value="programming">programming</option>
+                <option value="history">history</option>
+                <option value="literature">literature</option>
+                <option value="geography">geography</option>
+                <option value="other">other</option>
+            </select>        </div>
+        <button type="submit" class="btn">Apply Filters</button>
+    </form>
+
+    <h1 class="page-title">Available Quizzes</h1>
+
+    <!-- Quiz List -->
+    <ul class="quiz-list">
+        {% for quiz in quizzes %}
+            <li class="quiz-item">
+                <h2>{{ quiz.title }}</h2>
+                <p>{{ quiz.description }}</p>
+                
+                <!-- Display Type, Duration, and Tags Side by Side -->
+                <div class="quiz-meta d-flex">
+                    <p><strong>Type:</strong> {{ quiz.quiz_type }}</p>
+                    <p><strong>Duration:</strong> {{ quiz.formatted_duration }}</p>
+                    <p><strong>Tags:</strong> {{ quiz.tags|join:", " }}</p>
+                </div>
+                
+                <a href="#" class="btn">Participate</a>
+            </li>
+        {% empty %}
+            <p>No quizzes available right now.</p>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

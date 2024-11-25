@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/quiz.css' %}">
+{% endblock %}
+
+{% block title %}Set Questions{% endblock %}
+
+{% block nav_items %}
+    <li><a href="{% url 'quiz_home' %}">Quizzes</a></li>
+    <li><a href="#">Profile</a></li>
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <h2>Set Questions for "{{ quiz.title }}"</h2>
+
+    <!-- Form to Add Questions -->
+    <form method="POST" id="questionForm">
+        {% csrf_token %}
+        
+        <!-- Start a counter for question numbering -->
+        <div class="question-form-container" id="questionContainer">
+            <!-- Initial question will be numbered as 1 -->
+            <div class="question-item" id="question-1">
+                <h3 style="color:blue">Question 1</h3>
+                <div class="form-group">
+                    <label for="question_text">Question Text</label>
+                    <textarea name="question_text" id="question_text" class="form-control" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="option_a">Option A</label>
+                    <input type="text" name="option_a" id="option_a" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="option_b">Option B</label>
+                    <input type="text" name="option_b" id="option_b" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="option_c">Option C</label>
+                    <input type="text" name="option_c" id="option_c" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="option_d">Option D</label>
+                    <input type="text" name="option_d" id="option_d" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="correct_option">Correct Option</label>
+                    <select name="correct_option" id="correct_option" class="form-control" required>
+                        <option value="A">Option A</option>
+                        <option value="B">Option B</option>
+                        <option value="C">Option C</option>
+                        <option value="D">Option D</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <!-- + Add Question Button -->
+    <button type="button" class="btn btn-primary" id="addQuestionButton">+ Add Question</button>
+    <br><br>
+    <!-- Validation message -->
+    <div id="validationMessage" class="alert alert-danger" style="display:none;">
+        All fields are required. Please fill in all fields before adding another question.
+    </div>
+
+    <!-- Submit button (initially hidden) -->
+    <div id="submitButtonContainer" style="display:none;">
+        <button type="submit" form="questionForm" class="btn btn-success">Submit All Questions</button>
+    </div>
+
+    <hr>
+
+    <a href="{% url 'quiz_home' %}" class="btn btn-secondary">Back to Dashboard</a>
+</div>
+
+<script>
+    let questionCount = 1; // Start with question 1
+
+    document.getElementById('addQuestionButton').addEventListener('click', function () {
+        const form = document.getElementById('questionForm');
+        const inputs = form.querySelectorAll('input, select, textarea');
+        const validationMessage = document.getElementById('validationMessage');
+        const submitButtonContainer = document.getElementById('submitButtonContainer');
+        const questionContainer = document.getElementById('questionContainer');
+
+        // Check if all fields in the current form are filled
+        let isFormFilled = true;
+        inputs.forEach(input => {
+            if (input.value.trim() === '') {
+                isFormFilled = false;
+            }
+        });
+
+        if (isFormFilled) {
+            // Increment question count
+            questionCount++;
+
+            // Clone the form and append it to the parent form
+            const newQuestionItem = document.createElement('div');
+            newQuestionItem.classList.add('question-item');
+            newQuestionItem.id = `question-${questionCount}`;
+
+            // Add question numbering
+            newQuestionItem.innerHTML = `
+                <h5>Question ${questionCount}</h5>
+                <div class="form-group">
+                    <label for="question_text_${questionCount}">Question Text</label>
+                    <textarea name="question_text_${questionCount}" id="question_text_${questionCount}" class="form-control" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="option_a_${questionCount}">Option A</label>
+                    <input type="text" name="option_a_${questionCount}" id="option_a_${questionCount}" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="option_b_${questionCount}">Option B</label>
+                    <input type="text" name="option_b_${questionCount}" id="option_b_${questionCount}" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="option_c_${questionCount}">Option C</label>
+                    <input type="text" name="option_c_${questionCount}" id="option_c_${questionCount}" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="option_d_${questionCount}">Option D</label>
+                    <input type="text" name="option_d_${questionCount}" id="option_d_${questionCount}" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="correct_option_${questionCount}">Correct Option</label>
+                    <select name="correct_option_${questionCount}" id="correct_option_${questionCount}" class="form-control" required>
+                        <option value="A">Option A</option>
+                        <option value="B">Option B</option>
+                        <option value="C">Option C</option>
+                        <option value="D">Option D</option>
+                    </select>
+                </div>
+            `;
+
+            questionContainer.appendChild(newQuestionItem);
+
+            // Show the submit button after the first question is added
+            submitButtonContainer.style.display = 'block';
+
+            // Hide the validation message if the form is valid
+            validationMessage.style.display = 'none';
+        } else {
+            // Show the validation message if fields are missing
+            validationMessage.style.display = 'block';
+        }
+    });
+</script>
+
+{% endblock %}
