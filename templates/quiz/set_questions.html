@@ -9,12 +9,17 @@
 
 {% block nav_items %}
     <li><a href="{% url 'quiz_home' %}">Quizzes</a></li>
-    <li><a href="#">Profile</a></li>
+    <li>
+        <a href="#">
+            <img src="{% static 'images/user_icon.png' %}" alt="User Icon" class="user-icon">
+            {{ user.email }}
+        </a>
+    </li>
 {% endblock %}
 
 {% block content %}
 
-<div class="container">
+<div class="main-container">
     <h2>Set Questions for "{{ quiz.title }}"</h2>
 
     <!-- Form to Add Questions -->
@@ -74,7 +79,6 @@
 
     <hr>
 
-    <a href="{% url 'quiz_home' %}" class="btn btn-secondary">Back to Dashboard</a>
 </div>
 
 <script>
@@ -109,27 +113,27 @@
                 <h5>Question ${questionCount}</h5>
                 <div class="form-group">
                     <label for="question_text_${questionCount}">Question Text</label>
-                    <textarea name="question_text_${questionCount}" id="question_text_${questionCount}" class="form-control" rows="3" required></textarea>
+                    <textarea name="question_text[]" id="question_text_${questionCount}" class="form-control" rows="3" required></textarea>
                 </div>
                 <div class="form-group">
                     <label for="option_a_${questionCount}">Option A</label>
-                    <input type="text" name="option_a_${questionCount}" id="option_a_${questionCount}" class="form-control" required>
+                    <input type="text" name="option_a[]" id="option_a_${questionCount}" class="form-control" required>
                 </div>
                 <div class="form-group">
                     <label for="option_b_${questionCount}">Option B</label>
-                    <input type="text" name="option_b_${questionCount}" id="option_b_${questionCount}" class="form-control" required>
+                    <input type="text" name="option_b[]" id="option_b_${questionCount}" class="form-control" required>
                 </div>
                 <div class="form-group">
                     <label for="option_c_${questionCount}">Option C</label>
-                    <input type="text" name="option_c_${questionCount}" id="option_c_${questionCount}" class="form-control" required>
+                    <input type="text" name="option_c[]" id="option_c_${questionCount}" class="form-control" required>
                 </div>
                 <div class="form-group">
                     <label for="option_d_${questionCount}">Option D</label>
-                    <input type="text" name="option_d_${questionCount}" id="option_d_${questionCount}" class="form-control" required>
+                    <input type="text" name="option_d[]" id="option_d_${questionCount}" class="form-control" required>
                 </div>
                 <div class="form-group">
                     <label for="correct_option_${questionCount}">Correct Option</label>
-                    <select name="correct_option_${questionCount}" id="correct_option_${questionCount}" class="form-control" required>
+                    <select name="correct_option[]" id="correct_option_${questionCount}" class="form-control" required>
                         <option value="A">Option A</option>
                         <option value="B">Option B</option>
                         <option value="C">Option C</option>

@@ -10,9 +10,12 @@ class User(AbstractUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
     
-    created_quizzes = models.ManyToManyField(
-        'quiz.Quiz', related_name='quiz_authors', blank=True
-    )
-    
     def __str__(self):
         return self.email
+
+
+class Tag(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+
+    def __str__(self):
+        return self.name

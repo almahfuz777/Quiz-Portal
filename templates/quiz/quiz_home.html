@@ -9,39 +9,48 @@
 
 {% block nav_items %}
     <li><a href="{% url 'create_quiz' %}">Create Quiz</a></li>
-    <li><a href="#">Profile</a></li>
+    <li>
+        <a href="#">
+            <img src="{% static 'images/user_icon.png' %}" alt="User Icon" class="user-icon">
+            {{ user.email }}
+        </a>
+    </li>
 {% endblock %}
 
 {% block content %}
 <div class="container">
     
     <!-- Filter Form (Side by Side) -->
-    <h3>Filter Quizzes:</h3>
-
-    <form method="get" class="filter-form d-flex">
-        <div class="filter-item">
-            <label for="quiz_type">Filter by Type:</label>
-            <select name="quiz_type" id="quiz_type">
-                <option value="">All</option>
-                <option value="public">Public</option>
-                <option value="private">Private</option>
-            </select>
-        </div>
-        <div class="filter-item">
-            <label for="tag">Filter by Tag:</label>
-            <select name="quiz_type" id="quiz_type">
-                <option value="">All</option>
-                <option value="math">math</option>
-                <option value="science">science</option>
-                <option value="programming">programming</option>
-                <option value="history">history</option>
-                <option value="literature">literature</option>
-                <option value="geography">geography</option>
-                <option value="other">other</option>
-            </select>        </div>
-        <button type="submit" class="btn">Apply Filters</button>
-    </form>
-
+    <div class="filter-container">
+        <h3>Filter Quizzes:</h3>
+    
+        <form method="get" class="filter-form d-flex">
+            <div class="filter-item">
+                <label for="quiz_type">Filter by Type:</label>
+                <select name="quiz_type" id="quiz_type">
+                    <option value="">All</option>
+                    <option value="public" {% if request.GET.quiz_type == 'public' %}selected{% endif %}>Public</option>
+                    <option value="private" {% if request.GET.quiz_type == 'private' %}selected{% endif %}>Private</option>
+                </select>
+            </div>
+            <div class="filter-item">
+                <label for="tag">Filter by Tag:</label>
+                <select name="tag" id="tag">
+                    <option value="">All</option>
+                    {% for tag in tags %}
+                        <option value="{{ tag.id }}" {% if request.GET.tag == tag.id|stringformat:"s" %}selected{% endif %}>{{ tag.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="filter-item">
+                <label for="available_only">Available Only:</label>
+                <input type="checkbox" name="available_only" id="available_only" value="1" 
+                        {% if request.GET.available_only %}checked{% endif %}>
+            </div>
+            <button type="submit" class="btn">Apply Filters</button>
+        </form>
+    </div>
+    
     <h1 class="page-title">Available Quizzes</h1>
 
     <!-- Quiz List -->
@@ -53,9 +62,9 @@
                 
                 <!-- Display Type, Duration, and Tags Side by Side -->
                 <div class="quiz-meta d-flex">
-                    <p><strong>Type:</strong> {{ quiz.quiz_type }}</p>
+                    <p><strong>Type:</strong><br> {{ quiz.quiz_type }}</p>
                     <p><strong>Duration:</strong> {{ quiz.formatted_duration }}</p>
-                    <p><strong>Tags:</strong> {{ quiz.tags|join:", " }}</p>
+                    <p><strong>Tags:</strong> {% for tag in quiz.tags.all %}{{ tag.name }}{% if not forloop.last %}, {% endif %}{% empty %}None{% endfor %}</p>
                 </div>
                 
                 <a href="#" class="btn">Participate</a>
