@@ -1,6 +1,4 @@
 {% load static %}
-{% load socialaccount %}
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -33,12 +31,6 @@
               <input type="submit" id="submit" value="Submit" />
             </div>
           </form>
-
-          <!-- GitHub login button -->
-          <a href="{% provider_login_url 'github' %}" class="github-login">
-              <img src="{% static 'images/github-icon.png' %}" alt="Login with GitHub">
-              Sign in with GitHub
-          </a>
         </div>
       </div>
     </div>

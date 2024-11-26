@@ -54,7 +54,7 @@ def verify(request, token):
 
         user_obj.is_verified = True
         user_obj.save()
-        return HttpResponse('Your account has been verified successfully!')
+        return redirect('quiz_home')
     except User.DoesNotExist:
         return HttpResponse('Invalid verification token!')
     
