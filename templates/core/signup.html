@@ -1,4 +1,6 @@
 {% load static %}
+{% load socialaccount %}
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -6,7 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Signup</title>
     <link rel="stylesheet" href="{% static 'css/signup.css' %}" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
   </head>
   <body>
     <div class="page">
@@ -18,43 +19,12 @@
           </div>
         </div>
         <div class="right">
-          <svg viewBox="0 0 350 900">
-            <defs>
-              <linearGradient
-                id="linearGradient"
-                x1="13"
-                y1="193.5"
-                x2="307"
-                y2="193.5"
-                gradientUnits="userSpaceOnUse"
-              >
-                <stop style="stop-color: #ff00ff" offset="0" />
-                <stop style="stop-color: #ff0000" offset="1" />
-              </linearGradient>
-            </defs>
-            <path
-            d="m 40,120 240,0 
-               c 0,0 25,0.8 25,35 
-               0,34.2 -25,35 -25,35 
-               h -240 
-               c 0,0 -25,4 -25,38.5 
-               0,34.5 25,38.5 25,38.5 
-               h 215 
-               c 0,0 20,0 20,-25 
-               0,-24 -20,-25 -20,-25 
-               h -190 
-               c 0,0 -20,2 -20,25 
-               0,24 20,25 50,25 
-               h 170"
-          />
-          
-          </svg>
           <form action="{% url 'signup' %}" method="POST">
             {% csrf_token %}
             <div class="form">
               <label for="email">Email</label>
               <input type="email" id="email" name="email" required />
-              <label for="username">User name</label>
+              <label for="username">Username</label>
               <input type="text" name="username" id="username" required />
               <label for="password1">Password</label>
               <input type="password" id="password1" name="password1" required />
@@ -63,11 +33,14 @@
               <input type="submit" id="submit" value="Submit" />
             </div>
           </form>
+
+          <!-- GitHub login button -->
+          <a href="{% provider_login_url 'github' %}" class="github-login">
+              <img src="{% static 'images/github-icon.png' %}" alt="Login with GitHub">
+              Sign in with GitHub
+          </a>
         </div>
       </div>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
-
-    <script src="{% static 'js/signup.js' %}"></script>
   </body>
 </html>
