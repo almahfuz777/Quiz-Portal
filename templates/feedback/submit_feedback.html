@@ -1,0 +1,16 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Submit Feedback for {{ quiz.title }}</title>
+</head>
+<body>
+    <h1>Submit Feedback for {{ quiz.title }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit Feedback</button>
+    </form>
+    <a href="{% url 'view_feedbacks' quiz.id participant.id %}">View Feedback</a>
+</body>
+</html>

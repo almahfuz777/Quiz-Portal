@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Feedbacks for {{ quiz.title }}</title>
+</head>
+<body>
+    <h1>Feedbacks for {{ quiz.title }}</h1>
+
+        {% for feedback in feedbacks %}
+            <li>
+                <strong>{{ feedback.participant.user.username }}:</strong> {{ feedback.comment }}
+                {% if feedback.content %}
+                    <p>Additional Content: {{ feedback.content }}</p>
+                {% endif %}
+                <p><em>Submitted on {{ feedback.created_at }}</em></p>
+            </li>
+        {% endfor %}
+        <ul>
+            {% for feedback in feedbacks %}
+                <li>
+                    <strong>{{ feedback.participant.user.username }}:</strong> {{ feedback.comment }}
+                    {% if feedback.content %}
+                        <p>Additional Content: {{ feedback.content }}</p>
+                    {% endif %}
+                    <p><em>Submitted on {{ feedback.created_at }}</em></p>
+                </li>
+            {% endfor %}
+        </ul>
+        
+        {% if participant %}
+            <a href="{% url 'submit_feedback' quiz.id participant.id %}">Submit Feedback</a>
+        {% else %}
+            <p>You must be a participant to submit feedback.</p>
+        {% endif %}
+        
+    
+</body>
+</html>
