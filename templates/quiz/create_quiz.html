@@ -9,11 +9,16 @@
 
 {% block nav_items %}
     <li><a href="{% url 'quiz_home' %}">Quizzes</a></li>
-    <li><a href="#">Profile</a></li>
+    <li>
+        <a href="#">
+            <img src="{% static 'images/user_icon.png' %}" alt="User Icon" class="user-icon">
+            {{ user.email }}
+        </a>
+    </li>
 {% endblock %}
 
 {% block content %}
-<div class="container">
+<div class="main-container">
     <h2>Create a New Quiz</h2>
 
     <form method="POST">
@@ -28,42 +33,62 @@
             <textarea name="description" id="description" class="form-control" rows="3"></textarea>
         </div>
         <div class="form-group">
+        <div class="d-flex">
+            <div class="type-exp">
             <label for="quiz_type">Quiz Type</label>
             <select name="quiz_type" id="quiz_type" class="form-control" required>
                 <option value="public">Public</option>
                 <option value="private">Private</option>
             </select>
+            </div>
+            <!-- Expiry Date -->
+            <div class="type-exp">
+                <label for="expiry_date">Expiry Date (optional)</label>
+                <input type="datetime-local" name="expiry_date" id="expiry_date" class="form-control" value="" >
+            </div>
+        </div>
+
         </div>
         <!-- Show password input only if quiz is private -->
         <div class="form-group" id="password-field" style="display:none;">
             <label for="password">Password (for private quiz)</label>
             <input type="password" name="password" id="password" class="form-control">
         </div>
+        <!-- Duration Fields (HH, MM, SS) -->
         <div class="form-group">
-            <label for="duration">Duration</label>
-            <div class="d-flex">
-                <input type="number" name="duration_hours" id="duration_hours" class="form-control mr-2" placeholder="HH" required>
-                <input type="number" name="duration_minutes" id="duration_minutes" class="form-control mr-2" placeholder="MM" required>
-                <input type="number" name="duration_seconds" id="duration_seconds" class="form-control" placeholder="SS" required>
+        <label for="duration">Duration</label>
+        <div class="d-flex">
+            <div class="duration-field">
+                <label for="duration_hours">HH</label>
+                <input type="number" name="duration_hours" id="duration_hours" class="form-control" placeholder="HH" value="0" required>
+            </div>
+            <div class="duration-field">
+                <label for="duration_minutes">MM</label>
+                <input type="number" name="duration_minutes" id="duration_minutes" class="form-control" placeholder="MM" value="0" required>
+            </div>
+            <div class="duration-field">
+                <label for="duration_seconds">SS</label>
+                <input type="number" name="duration_seconds" id="duration_seconds" class="form-control" placeholder="SS" value="0" required>
             </div>
         </div>
-        <!-- Expiry Date -->
-        <div class="form-group">
-            <label for="expiry_date">Expiry Date</label>
-            <input type="datetime-local" name="expiry_date" id="expiry_date" class="form-control" required>
         </div>
+        <!-- Select Tags -->
         <div class="form-group">
-            <label for="tags">Select a Tag</label>
-            <select name="tags" id="tags" class="form-control" required>
-                <option value="other">other</option>
-                <option value="math">math</option>
-                <option value="science">science</option>
-                <option value="programming">programming</option>
-                <option value="history">history</option>
-                <option value="literature">literature</option>
-                <option value="geography">geography</option>
+            <label for="tags">Select Tags</label>
+            <select name="tags" id="tags" class="form-control" multiple>
+                {% for tag in tags %}
+                    <option value="{{ tag.id }}">{{ tag.name }}</option>
+                {% endfor %}
+                <option value="add_new">Add New</option>
             </select>
         </div>
+
+        <!-- New Tags input -->
+        <div class="form-group" id="new-tags-container" style="display: none;">
+            <label for="new_tags">Create New Tags (separate by commas)</label>
+            <input type="text" name="new_tags" id="new_tags" class="form-control" placeholder="Enter new tags">
+        </div>
+
         <div class="form-check">
             <input type="checkbox" name="can_view_score" id="can_view_score" class="form-check-input">
             <label class="form-check-label" for="can_view_score">Can View Score Immediately</label>
@@ -86,6 +111,19 @@
 
     // Trigger change event to set initial state
     document.getElementById('quiz_type').dispatchEvent(new Event('change'));
+
+    // Show new tags input when "Add New" option is selected
+    document.getElementById('tags').addEventListener('change', function() {
+        var newTagsContainer = document.getElementById('new-tags-container');
+        if (this.value === 'add_new') {
+            newTagsContainer.style.display = 'block';
+        } else {
+            newTagsContainer.style.display = 'none';
+        }
+    });
+
+    // Trigger change event to set initial state for new tags input visibility
+    document.getElementById('tags').dispatchEvent(new Event('change'));
 </script>
 {% endblock %}
 

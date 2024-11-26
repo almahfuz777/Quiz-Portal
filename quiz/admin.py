@@ -1,3 +1,7 @@
 from django.contrib import admin
+from .models import Quiz, Question, QuizStats
 
-# Register your models here.
+# register models
+admin.site.register(Quiz)
+admin.site.register(Question)
+admin.site.register(QuizStats)

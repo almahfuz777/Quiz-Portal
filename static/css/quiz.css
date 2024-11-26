@@ -1,8 +1,77 @@
-/* General Container Styles */
-.container {
+.user-icon{
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+}
+.main-container {
     max-width: 800px;
-    margin: 0 auto;
+    margin: 15px auto;
     padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+.filter-container {
+    display: flex;
+    flex-direction: column; /* Stack title and form vertically */
+    align-items: flex-start; /* Align title and form to the left */
+    padding: 15px;
+    margin: 10px auto;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 100%;
+}
+
+.filter-container h3 {
+    margin-bottom: 5px;
+    font-size: 1.2rem;
+    color: #333;
+}
+
+/* Filter Form */
+.filter-form {
+    display: flex;
+    flex-direction: row; /* Align items horizontally */
+    align-items: left; /* Center items vertically */
+    justify-content: space-between; /* Add space between items */
+    gap: 10px; /* Spacing between items */
+    width: 100%; /* Full width for responsiveness */
+}
+
+.filter-item label {
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.filter-item select {
+    padding: 5px;
+    font-size: 0.9rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    width: 100%; /* Responsive width for dropdowns */
+}
+
+/* Filter Button */
+.filter-form .btn {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+    white-space: nowrap; /* Prevent text wrapping */
+}
+
+.filter-form .btn:hover {
+    background-color: #0056b3;
 }
 
 /* Titles */
@@ -10,6 +79,7 @@
     font-size: 2rem;
     margin-bottom: 20px;
     text-align: center;
+    color: #333;
 }
 
 /* Forms */
@@ -28,6 +98,28 @@
     display: block;
     font-weight: bold;
     margin-bottom: 5px;
+    color: #495057;
+}
+
+.form-control {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #495057;
+}
+/* Checkbox styling */
+.form-check {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.form-check-label {
+    margin: 0;
+    font-size: 14px;
+    color: #495057;
 }
 
 .form-group input, 
@@ -39,17 +131,49 @@
     border-radius: 5px;
 }
 
+/* Compact HH:MM:SS input boxes */
+.d-flex {
+    display: flex;
+    justify-content: space-between;
+    /* gap: 10px; */
+    width: 100%;
+}
+
+.d-flex input {
+    width: calc(33.33% - 7px);
+    text-align: center;
+}
+/* Tags dropdown and input styling */
+#tags {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #495057;
+}
+#new-tags-container {
+    margin-top: 10px;
+}
+/* Compact password field toggle */
+#password-field {
+    margin-top: -10px;
+    transition: all 0.2s ease;
+}
 /* Buttons */
 .btn {
-    display: inline-block;
+    display: block;
+    width: 100%;
     padding: 10px 15px;
-    color: #fff;
     background-color: #007bff;
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
     border: none;
-    border-radius: 5px;
-    text-decoration: none;
-    text-align: center;
+    border-radius: 4px;
     cursor: pointer;
+    text-align: center;
+    transition: background-color 0.2s;
 }
 
 .btn:hover {
@@ -65,11 +189,28 @@
     background-color: #0056b3;
     border-color: #0056b3;
 }
+/* Responsive design */
+@media (max-width: 768px) {
+    .d-flex input {
+        width: 100%;
+    }
+
+    .btn {
+        width: auto;
+        padding: 8px 10px;
+    }
+}
 
 /* Quiz List */
 .quiz-list {
     list-style: none;
     padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin: 0 auto;
+    max-width: 1200px;
+
 }
 
 .quiz-item {
@@ -77,16 +218,54 @@
     border: 1px solid #ddd;
     border-radius: 5px;
     margin-bottom: 10px;
-    background-color: #f9f9f9;
+    background-color: #f8f9fa; /* Light gray background */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .quiz-item h2 {
     margin-bottom: 10px;
     font-size: 1.5rem;
+    color: #007bff; /* Primary color for title */
 }
 
 .quiz-item p {
     margin-bottom: 10px;
+}
+
+/* Participate Button */
+.quiz-item .btn {
+    text-align: center;
+    background-color: #007bff; /* Primary button color */
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+.quiz-item .btn:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+/* Quiz Meta Info */
+.quiz-meta {
+    display: flex;
+    flex-wrap: wrap; /* Ensure items wrap if there's not enough space */
+    gap: 10px;
+    margin: 10px 0;
+    color: #555;
+    font-size: 0.9rem;
+}
+.quiz-meta p {
+    margin: 0;
+    flex: 1; /* Allow each item to grow evenly */
+    min-width: 100px;
 }
 
 /* list */
@@ -96,4 +275,37 @@ ul {
 
 ul li {
     margin-bottom: 10px;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #343a40;
+}
+.duration-field {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+}
+
+.duration-field label {
+    margin-right: 5px;
+}
+
+.duration-field input {
+    width: 100%; /* Make input field take full width of the container */
+    text-align: center; /* Center the input text */
+}
+.type-exp{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.type-exp label {
+    margin-right: 5px;
+}
+.type-exp input {
+    width: 100%; /* Make input field take full width of the container */
+    text-align: center; /* Center the input text */
 }
