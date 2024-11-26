@@ -10,8 +10,8 @@ def homepage(req):
     return render(req, 'core/homepage.html')
 
 @login_required(login_url='login')
-def dashboard(request):
-    return render(request,'core/dashboard.html')
+def quiz_home(request):
+    return render(request,'quiz/quiz_home.html')
 
 User = get_user_model()  # Custom User model
 
@@ -67,7 +67,7 @@ def user_login(request):
         print(passw)
         if user is not None:
             login(request,user)
-            return redirect('dashboard')
+            return redirect('quiz_home')
         else:
             return HttpResponse("Username or Password is incorrect!!!")
         

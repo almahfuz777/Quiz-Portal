@@ -26,34 +26,34 @@
     <form method="POST" id="questionForm">
         {% csrf_token %}
         
-        <!-- Start a counter for question numbering -->
+        <!-- Container for all questions -->
         <div class="question-form-container" id="questionContainer">
-            <!-- Initial question will be numbered as 1 -->
+            <!-- Initial question -->
             <div class="question-item" id="question-1">
                 <h3 style="color:blue">Question 1</h3>
                 <div class="form-group">
-                    <label for="question_text">Question Text</label>
-                    <textarea name="question_text" id="question_text" class="form-control" rows="3" required></textarea>
+                    <label for="question_text_1">Question Text</label>
+                    <textarea name="question_text[]" id="question_text_1" class="form-control" rows="3" required></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="option_a">Option A</label>
-                    <input type="text" name="option_a" id="option_a" class="form-control" required>
+                    <label for="option_a_1">Option A</label>
+                    <input type="text" name="option_a[]" id="option_a_1" class="form-control" required>
                 </div>
                 <div class="form-group">
-                    <label for="option_b">Option B</label>
-                    <input type="text" name="option_b" id="option_b" class="form-control" required>
+                    <label for="option_b_1">Option B</label>
+                    <input type="text" name="option_b[]" id="option_b_1" class="form-control" required>
                 </div>
                 <div class="form-group">
-                    <label for="option_c">Option C</label>
-                    <input type="text" name="option_c" id="option_c" class="form-control" required>
+                    <label for="option_c_1">Option C</label>
+                    <input type="text" name="option_c[]" id="option_c_1" class="form-control" required>
                 </div>
                 <div class="form-group">
-                    <label for="option_d">Option D</label>
-                    <input type="text" name="option_d" id="option_d" class="form-control" required>
+                    <label for="option_d_1">Option D</label>
+                    <input type="text" name="option_d[]" id="option_d_1" class="form-control" required>
                 </div>
                 <div class="form-group">
-                    <label for="correct_option">Correct Option</label>
-                    <select name="correct_option" id="correct_option" class="form-control" required>
+                    <label for="correct_option_1">Correct Option</label>
+                    <select name="correct_option[]" id="correct_option_1" class="form-control" required>
                         <option value="A">Option A</option>
                         <option value="B">Option B</option>
                         <option value="C">Option C</option>
@@ -64,53 +64,54 @@
         </div>
     </form>
 
-    <!-- + Add Question Button -->
+    <!-- Add Question Button -->
     <button type="button" class="btn btn-primary" id="addQuestionButton">+ Add Question</button>
     <br><br>
+
     <!-- Validation message -->
     <div id="validationMessage" class="alert alert-danger" style="display:none;">
-        All fields are required. Please fill in all fields before adding another question.
+        Please fill out all fields before adding another question or submitting.
     </div>
 
-    <!-- Submit button (initially hidden) -->
+    <!-- Submit button -->
     <div id="submitButtonContainer" style="display:none;">
         <button type="submit" form="questionForm" class="btn btn-success">Submit All Questions</button>
     </div>
-
-    <hr>
-
 </div>
 
 <script>
     let questionCount = 1; // Start with question 1
 
     document.getElementById('addQuestionButton').addEventListener('click', function () {
-        const form = document.getElementById('questionForm');
-        const inputs = form.querySelectorAll('input, select, textarea');
+        const questionContainer = document.getElementById('questionContainer');
         const validationMessage = document.getElementById('validationMessage');
         const submitButtonContainer = document.getElementById('submitButtonContainer');
-        const questionContainer = document.getElementById('questionContainer');
 
-        // Check if all fields in the current form are filled
+        // Validate existing questions
+        const allQuestions = questionContainer.querySelectorAll('.question-item');
         let isFormFilled = true;
-        inputs.forEach(input => {
-            if (input.value.trim() === '') {
-                isFormFilled = false;
-            }
+
+        allQuestions.forEach(question => {
+            const inputs = question.querySelectorAll('input, select, textarea');
+            inputs.forEach(input => {
+                if (input.value.trim() === '') {
+                    isFormFilled = false;
+                }
+            });
         });
 
         if (isFormFilled) {
             // Increment question count
             questionCount++;
 
-            // Clone the form and append it to the parent form
+            // Create a new question dynamically
             const newQuestionItem = document.createElement('div');
             newQuestionItem.classList.add('question-item');
             newQuestionItem.id = `question-${questionCount}`;
 
-            // Add question numbering
+            // Populate the new question form
             newQuestionItem.innerHTML = `
-                <h5>Question ${questionCount}</h5>
+                <h3 style="color:blue">Question ${questionCount}</h3>
                 <div class="form-group">
                     <label for="question_text_${questionCount}">Question Text</label>
                     <textarea name="question_text[]" id="question_text_${questionCount}" class="form-control" rows="3" required></textarea>
@@ -142,16 +143,39 @@
                 </div>
             `;
 
+            // Append the new question to the container
             questionContainer.appendChild(newQuestionItem);
 
-            // Show the submit button after the first question is added
+            // Show the submit button
             submitButtonContainer.style.display = 'block';
 
-            // Hide the validation message if the form is valid
+            // Hide the validation message
             validationMessage.style.display = 'none';
         } else {
-            // Show the validation message if fields are missing
+            // Show validation message if any question is incomplete
             validationMessage.style.display = 'block';
+        }
+    });
+
+    // Validate all questions before form submission
+    document.getElementById('questionForm').addEventListener('submit', function (event) {
+        const validationMessage = document.getElementById('validationMessage');
+        const allQuestions = document.querySelectorAll('.question-item');
+        let isFormComplete = true;
+
+        allQuestions.forEach(question => {
+            const inputs = question.querySelectorAll('input, select, textarea');
+            inputs.forEach(input => {
+                if (input.value.trim() === '') {
+                    isFormComplete = false;
+                }
+            });
+        });
+
+        if (!isFormComplete) {
+            event.preventDefault(); // Prevent form submission
+            validationMessage.style.display = 'block';
+            validationMessage.textContent = 'Please complete all fields before submitting.';
         }
     });
 </script>
