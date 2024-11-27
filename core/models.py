@@ -34,10 +34,6 @@ class User(AbstractUser):
     # Specify the fields that are required to create a superuser
     REQUIRED_FIELDS = ['username']
     
-    # Relationship with the Quiz model to track the quizzes created by the user
-    created_quizzes = models.ManyToManyField(
-        'quiz.Quiz', related_name='quiz_authors', blank=True
-    )
     
     def __str__(self):
         """
