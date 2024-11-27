@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'core',
     'blog',
     'quiz',
+    'User_Profile',
 ]
 
 MIDDLEWARE = [

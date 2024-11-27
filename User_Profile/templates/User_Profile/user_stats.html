@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/profile.css' %}">
+{% endblock %}
+
+{% block title %}User Stats{% endblock %}
+
+{% block content %}
+<div class="main-container">
+    <h2>User Stats</h2>
+    <p><strong>Quizzes Created:</strong> {{ created_quizzes_count }}</p>
+    <p><strong>Quizzes Participated:</strong> {{ participations_count }}</p>
+    <p><strong>Total Score:</strong> {{ total_score }}</p>
+    <p><strong>Your Rank:</strong> {{ user_rank }}</p>
+</div>
+{% endblock %}

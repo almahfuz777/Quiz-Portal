@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/profile.css' %}">
+{% endblock %}
+
+
+{% block title %}Settings{% endblock %}
+
+{% block content %}
+<div class="main-container">
+    <h2>Settings</h2>
+    {% if message %}
+        <p style="color: green;">{{ message }}</p>
+    {% endif %}
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="username">Update Username</label>
+            <input type="text" name="username" id="username" value="{{ username }}">
+        </div>
+        <div class="form-group">
+            <label for="email">Update Email</label>
+            <input type="email" name="email" id="email" value="{{ email }}">
+        </div>
+        <div class="form-group">
+            <label for="bio">Update Bio</label>
+            <textarea name="bio" id="bio">{{ bio }}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="location">Update Location</label>
+            <input type="text" name="location" id="location" value="{{ location }}">
+        </div>
+        <div class="form-group">
+            <label for="date_of_birth">Update Date of Birth</label>
+            <input type="date" name="date_of_birth" id="date_of_birth" value="{{ date_of_birth }}">
+        </div>
+        <div class="form-group">
+            <label for="profile_picture">Update Profile Picture</label>
+            <input type="file" name="profile_picture" id="profile_picture">
+        </div>
+        <button type="submit" class="btn">Save Changes</button>
+    </form>
+</div>
+{% endblock %}
