@@ -2,16 +2,12 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth import get_user_model, authenticate, login,logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.hashers import make_password
 from .utils import send_email_token
 import uuid
+from django.contrib import messages
 
 def homepage(req):
     return render(req, 'core/homepage.html')
-
-@login_required(login_url='login')
-def dashboard(request):
-    return render(request,'core/dashboard.html')
 
 User = get_user_model()  # Custom User model
 
@@ -23,14 +19,18 @@ def signup(request):
         pass2 = request.POST.get('password2')
 
         if pass1 != pass2:
-            return HttpResponse('Passwords do not match!')
+            messages.error(request,"Password do not match")
+            return render(request,'core/signup.html')
 
         if User.objects.filter(email=email).exists():
-            return HttpResponse('Email is already in use!')
+            messages.error(request,"Email already exist")
+            return render(request,'core/signup.html')
+            
 
         if User.objects.filter(username=uname).exists():
-            return HttpResponse('Username is already taken!')
-        print(email," ",pass1)
+            messages.error(request,"Username already taken")
+            return render(request,'core/signup.html')
+        
         # Create user and send verification email
         token = str(uuid.uuid4())
         user_obj = User.objects.create_user(
@@ -42,7 +42,9 @@ def signup(request):
         )
         send_email_token(email, token)
 
-        return HttpResponse('A verification email has been sent to your email address.')
+        messages.success(request,"A verification link has sent to your email")
+        return redirect('login')
+
     return render(request, 'core/signup.html')
 
 
@@ -50,13 +52,15 @@ def verify(request, token):
     try:
         user_obj = User.objects.get(email_token=token)
         if user_obj.is_verified:
-            return HttpResponse('Your account is already verified!')
+            messages.error(request, "You email account is already verified")
+            return redirect('quiz_home')
 
         user_obj.is_verified = True
         user_obj.save()
         return redirect('quiz_home')
     except User.DoesNotExist:
-        return HttpResponse('Invalid verification token!')
+        messages.error(request,"Invalid verification token")
+        return redirect('login')
     
 
 def user_login(request):
@@ -67,9 +71,10 @@ def user_login(request):
         print(passw)
         if user is not None:
             login(request,user)
-            return redirect('dashboard')
+            return redirect('quiz_home')
         else:
-            return HttpResponse("Username or Password is incorrect!!!")
+          messages.error(request, "Username or password is incorrect")
+          return render(request,'core/login.html')
         
     return render(request,'core/login.html')
 

@@ -35,7 +35,15 @@ SOCIALACCOUNT_PROVIDERS ={
              'client_id' : 'Ov23li3CHAHL9AltFSWv',
              'secret':'fd78fc01795437763a786f77d9450916a23f8b9e',
              'key':''
-         }
+         },
+         'AUTH_PARAMS': {'scope': 'user:email'},  # req to github to provide the private email
+    },
+        'google': {
+        'APP': {
+            'client_id': '1008665267767-ovh8dm3om8stv3qhhli2suhsr2vkrjsd.apps.googleusercontent.com',
+            'secret': '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',
+            'key': '',
+        }
     }
 }
 
@@ -45,7 +53,7 @@ AUTHENTICATION_BACKENDS = (
 )
 
 SITE_ID = 1  # Replace with your Site ID in the Django admin
-LOGIN_REDIRECT_URL = '/'  # Where to redirect after login
+LOGIN_REDIRECT_URL = '/quiz/'  # Where to redirect after login
 LOGOUT_REDIRECT_URL = '/'  # Where to redirect after logout
 
 # Optional: Disable email confirmation
@@ -74,6 +82,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.github',  # Add GitHub provider
+    'allauth.socialaccount.providers.google', # Add Google provider
 ]
 
 MIDDLEWARE = [
