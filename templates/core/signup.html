@@ -33,7 +33,7 @@
               </linearGradient>
             </defs>
             <path
-            d="m 40,120 240,0 
+              d="m 40,120 240,0 
                c 0,0 25,0.8 25,35 
                0,34.2 -25,35 -25,35 
                h -240 
@@ -46,8 +46,7 @@
                c 0,0 -20,2 -20,25 
                0,24 20,25 50,25 
                h 170"
-          />
-          
+            />
           </svg>
           <form action="{% url 'signup' %}" method="POST">
             {% csrf_token %}
@@ -60,7 +59,16 @@
               <input type="password" id="password1" name="password1" required />
               <label for="password2">Confirm Password</label>
               <input type="password" id="password2" name="password2" required />
-              <input type="submit" id="submit" value="Submit" />
+              <div class="button-container">
+                <button class="glow-on-hover" type="submit">
+                  <img src="{% static "images/submit.png" %}" alt="">
+                </button>
+                <button class="glow-on-hover" type="button">
+                    <a href="{% url "login" %}">
+                      <img src="{% static "images/log-in.png" %}" alt="">
+                    </a>
+                </button>
+              </div>
             </div>
           </form>
         </div>
@@ -68,6 +76,14 @@
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
 
+    <!-- Display alert message for errors -->
+    {% if messages %}
+    <script type="text/javascript">
+      {% for message in messages %}
+        alert("{{ message }}");
+      {% endfor %}
+    </script>
+    {% endif %}
     <script src="{% static 'js/signup.js' %}"></script>
   </body>
 </html>
