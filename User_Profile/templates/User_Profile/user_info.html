@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/profile.css' %}">
+{% endblock %}
+
+
+{% block title %}User Info{% endblock %}
+
+{% block content %}
+<div class="main-container">
+    <h2>User Info</h2>
+    <p><strong>Username:</strong> {{ username }}</p>
+    <p><strong>Email:</strong> {{ email }}</p>
+    <p><strong>Bio:</strong> {{ bio }}</p>
+    <p><strong>Location:</strong> {{ location }}</p>
+    <p><strong>Date of Birth:</strong> {{ date_of_birth }}</p>
+    {% if profile_picture %}
+        <img src="{{ profile_picture }}" alt="Profile Picture" width="100">
+    {% endif %}
+</div>
+{% endblock %}

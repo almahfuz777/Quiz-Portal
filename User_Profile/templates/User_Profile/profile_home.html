@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/profile.css' %}">
+{% endblock %}
+
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<div class="main-container">
+    <h1>Profile Section</h1>
+    <ul>
+        <li><a href="{% url 'user_stats' %}">User Stats</a></li>
+        <li><a href="{% url 'user_info' %}">User Info</a></li>
+        <li><a href="{% url 'settings' %}">Settings</a></li>
+    </ul>
+</div>
+{% endblock %}
