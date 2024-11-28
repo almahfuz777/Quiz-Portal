@@ -35,7 +35,7 @@
   }
   form {
     height: 520px;
-    width: 400px;
+    width: 700px;
     background-color: rgba(255, 255, 255, 0.13);
     position: absolute;
     transform: translate(-50%, -50%);
@@ -95,6 +95,32 @@
   .social {
     margin-top: 30px;
     display: flex;
+    justify-content: center;
+  }
+  .social .signup{
+    background: red;
+    width: 150px;
+    border-radius: 3px;
+    padding: 5px 10px 10px 5px;
+    background-color: rgba(255, 255, 255, 0.27);
+    color: #eaf0fb;
+    text-align: center;
+    margin-left:25px;
+  }
+  .social a{
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    
+  }
+  .git:hover small, .go:hover small{
+    color:black;
+  }
+  .social a>i{
+    font-size: 2.5rem;
+  }
+  .social a:hover i{
+    color:rgb(1, 255, 238);
   }
   .social div {
     background: red;
@@ -108,9 +134,37 @@
   .social div:hover {
     background-color: rgba(255, 255, 255, 0.47);
   }
-  .social .fb {
+  .social .git {
     margin-left: 25px;
   }
+  .social .signup {
+    background-color: rgba(255, 255, 255, 0.27); 
+    color: #eaf0fb; 
+    text-align: center;
+    margin-left: 25px;
+    width: 150px;
+    border-radius: 3px;
+    padding: 5px 10px;
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+}
+
+.social .signup img {
+    width: 50px;  
+    height: 50px;
+    margin-right: 8px; 
+}
+
+
+.social .signup:hover {
+    background-color: rgba(209, 1, 1, 0.47); 
+}
+
+
+.social .signup:hover small {
+    color: black; 
+}
   .social i {
     margin-right: 4px;
   }
