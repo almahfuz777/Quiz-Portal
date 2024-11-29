@@ -1,17 +1,20 @@
 {% load static %}
-{% load socialaccount %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <title>Login</title>
 
     <link rel="preconnect" href="https://fonts.gstatic.com" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+
+    <link rel="stylesheet" href="{% static "css/login.css" %}">
 
   </head>
   <body>
@@ -19,48 +22,21 @@
       <div class="shape"></div>
       <div class="shape"></div>
     </div>
-    <form action="{% url 'login' %}" method='POST'>
-      {% csrf_token %}
+    <form action="{% url "login" %}" method='POST'>
+     {% csrf_token %}
       <h3>Login Here</h3>
+
       <label for="username">Email</label>
       <input type="email" placeholder="email" name="email" id="email" />
+
       <label for="password">Password</label>
       <input type="password" placeholder="Password" name="password" id="password" />
+
       <button>Log In</button>
       <div class="social">
-        <div class="go">
-          <!-- Google login button -->
-          <a href="{% provider_login_url 'google' %}" class="github-login">
-            <i class="fa-brands fa-google-plus"></i>
-            <small class="social-text">Sign in with google</small>
-          </a>
-        </div>
-        <div class="git">
-          <!-- GitHub login button -->
-          <a href="{% provider_login_url 'github' %}" class="github-login">
-            <i class="fa-brands fa-github"></i>
-            <small class="social-text">Sign in with github</small>
-          </a>
-        </div>
-        <div class="signup">
-          <!-- Signup button -->
-          <a href="{% url "signup" %}" class="github-login">
-             <img src="{% static "images/signup.png" %}" alt="">
-            <small class="social-text">Sign Up</small>
-          </a>
-        </div>
+        <div class="go"><i class="fab fa-google"></i> Google</div>
+        <div class="fb"><i class="fab fa-facebook"></i> Facebook</div>
       </div>
     </form>
-
-    <!-- Display alert message for errors -->
-    {% if messages %}
-      <script type="text/javascript">
-        {% for message in messages %}
-          alert("{{ message }}");
-        {% endfor %}
-      </script>
-    {% endif %}
-
-    <script src="https://kit.fontawesome.com/8372dfe193.js" crossorigin="anonymous"></script>
   </body>
 </html>
