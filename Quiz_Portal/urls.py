@@ -26,4 +26,5 @@ urlpatterns = [
     path('', include('core.urls')),  # Routes homepage to the core app
     path('blog/', include('blog.urls')),  # Routes '/blog/' to the blog app
     path('quiz/', include('quiz.urls')),  # Route homepage to the core app
+    path('',include('feedback.urls')),    # Route homepage to the feedback app
 ]

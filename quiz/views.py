@@ -9,7 +9,7 @@ from datetime import timedelta, datetime
 from django.utils.timezone import make_aware
 from .models import Quiz, Question, Participant
 
-# @login_required
+@login_required
 def quiz_home(request):
     quizzes = Quiz.objects.filter(expiry_date__gt=now())  # Filter active quizzes
     quiz_type = request.GET.get('quiz_type')
@@ -31,7 +31,7 @@ def quiz_home(request):
         
     return render(request, 'quiz/quiz_home.html', {'quizzes': quizzes})
 
-# @login_required
+@login_required
 def create_quiz(request):
     if request.method == 'POST':
         title = request.POST.get('title')
@@ -72,7 +72,7 @@ def create_quiz(request):
 
     return render(request, 'quiz/create_quiz.html')
 
-# @login_required
+@login_required
 def set_questions(request, quiz_id):
     quiz = get_object_or_404(Quiz, id=quiz_id)  # Ensure the quiz object is fetched by ID
     

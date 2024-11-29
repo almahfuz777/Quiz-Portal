@@ -1,4 +1,12 @@
 <!DOCTYPE html>
+<!-- 
+This HTML template is designed for the "View Feedbacks" page of the Quiz Portal.
+It displays a list of feedback entries for a specific quiz, submitted by participants.
+Key features include:
+- Responsive layout using Bootstrap.
+- Clear separation of feedback comments and additional content.
+- A button to navigate back to the Quiz Homepage.
+-->
 <html>
 <head>
     <title>Feedbacks for {{ quiz.title }}</title>
@@ -38,14 +46,10 @@
                 {% endif %}
             </div>
         </div>
-
-        <!-- Submit Feedback Button -->
-        <div class="text-center mt-4">
-            {% if participant %}
-                <a href="{% url 'submit_feedback' quiz.id participant.id %}" class="btn btn-primary">Submit Feedback</a>
-            {% else %}
-                <p class="text-danger">You must be a participant to submit feedback.</p>
-            {% endif %}
+    
+        <!-- Quiz Homepage Button -->
+        <div class="text-center mt-3">
+            <a href="{% url 'quiz_home' %}" class="btn btn-secondary">Quiz Homepage</a>
         </div>
     </div>
 
