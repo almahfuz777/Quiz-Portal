@@ -1,0 +1,71 @@
+/* General Styling for the Result Page */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+h1 {
+    font-size: 2rem;
+    color: #0056b3;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+h2 {
+    color: #0056b3;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+p {
+    font-size: 1.1rem;
+    margin: 0.5rem 0;
+    text-align: center;
+    color: #555;
+}
+
+/* Quiz Statistics Section */
+.quiz-stats {
+    list-style-type: none;
+    padding: 1rem;
+    margin: 1.5rem auto;
+    background-color: #fff;
+    border-radius: 10px;
+    max-width: 600px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.quiz-stats-item {
+    font-size: 1.2rem;
+    padding: 0.75rem;
+    border-bottom: 1px solid #ddd;
+    color: #333;
+}
+
+.quiz-stats-item:last-child {
+    border-bottom: none;
+}
+
+/* Button Styling */
+.btn {
+    display: block;
+    width: fit-content;
+    margin: 2rem auto 0;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    color: #fff;
+    background-color: #0056b3;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-bottom: 10px;
+}
+
+.btn:hover {
+    background-color: #004494;
+}

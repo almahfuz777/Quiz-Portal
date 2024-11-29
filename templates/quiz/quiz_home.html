@@ -69,7 +69,7 @@
                     <p><strong>Tags:</strong> {% for tag in quiz.tags.all %}{{ tag.name }}{% if not forloop.last %}, {% endif %}{% empty %}None{% endfor %}</p>
                 </div>
                 
-                <a href="#" class="btn">Participate</a>
+                <a href="{% url 'participate' quiz.quiz_id %}" class="btn">Participate</a>
             </li>
         {% empty %}
             <p>No quizzes available right now.</p>
