@@ -28,4 +28,5 @@ urlpatterns = [
     path('quiz/', include('quiz.urls')),  
     path('profile/', include('User_Profile.urls')), #User Profile App
     path('participation/', include('participation.urls')),
+    path('leaderboard/', include('leaderboard.urls')), #for leaderboard
 ]
