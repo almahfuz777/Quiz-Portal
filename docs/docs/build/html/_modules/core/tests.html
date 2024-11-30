@@ -1,0 +1,325 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>core.tests &mdash; Quiz Portal 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Quiz Portal
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Quiz-Portal</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Quiz Portal</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">core.tests</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for core.tests</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Here is all functions that will verify the validity of the core app functionality</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">unittest.mock</span> <span class="kn">import</span> <span class="n">patch</span>
+<span class="kn">from</span> <span class="nn">django.test</span> <span class="kn">import</span> <span class="n">TestCase</span>
+<span class="kn">from</span> <span class="nn">django.urls</span> <span class="kn">import</span> <span class="n">reverse</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth</span> <span class="kn">import</span> <span class="n">get_user_model</span>
+<span class="kn">from</span> <span class="nn">django.contrib.messages</span> <span class="kn">import</span> <span class="n">get_messages</span>
+<span class="kn">import</span> <span class="nn">uuid</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">send_email_token</span>
+<span class="kn">from</span> <span class="nn">Quiz_Portal</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">string</span>
+
+<div class="viewcode-block" id="generate_unique_email">
+<a class="viewcode-back" href="../../core.html#core.tests.generate_unique_email">[docs]</a>
+<span class="k">def</span> <span class="nf">generate_unique_email</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s2">&quot;testuser&quot;</span> <span class="o">+</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">choices</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">ascii_lowercase</span> <span class="o">+</span> <span class="n">string</span><span class="o">.</span><span class="n">digits</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">6</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot;@example.com&quot;</span></div>
+
+
+<div class="viewcode-block" id="generate_unique_username">
+<a class="viewcode-back" href="../../core.html#core.tests.generate_unique_username">[docs]</a>
+<span class="k">def</span> <span class="nf">generate_unique_username</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s2">&quot;testuser&quot;</span> <span class="o">+</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">choices</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">ascii_lowercase</span> <span class="o">+</span> <span class="n">string</span><span class="o">.</span><span class="n">digits</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">6</span><span class="p">))</span> </div>
+
+
+<div class="viewcode-block" id="UserViewsTestCase">
+<a class="viewcode-back" href="../../core.html#core.tests.UserViewsTestCase">[docs]</a>
+<span class="k">class</span> <span class="nc">UserViewsTestCase</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    This class test the all the functions of views file</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="UserViewsTestCase.setUp">
+<a class="viewcode-back" href="../../core.html#core.tests.UserViewsTestCase.setUp">[docs]</a>
+    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set up initial test data, such as creating a user.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">unique_username</span> <span class="o">=</span> <span class="n">generate_unique_username</span><span class="p">()</span>
+        <span class="n">unique_email</span> <span class="o">=</span> <span class="n">generate_unique_email</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="n">unique_username</span><span class="p">,</span>
+            <span class="s1">&#39;email&#39;</span><span class="p">:</span> <span class="n">unique_email</span><span class="p">,</span>
+            <span class="s1">&#39;password1&#39;</span><span class="p">:</span> <span class="s1">&#39;password123&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;password2&#39;</span><span class="p">:</span> <span class="s1">&#39;password123&#39;</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">get_user_model</span><span class="p">()</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create_user</span><span class="p">(</span>
+            <span class="n">username</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user_data</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">],</span>
+            <span class="n">email</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user_data</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">],</span>
+            <span class="n">password</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user_data</span><span class="p">[</span><span class="s1">&#39;password1&#39;</span><span class="p">]</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="UserViewsTestCase.test_signup_view_post_valid">
+<a class="viewcode-back" href="../../core.html#core.tests.UserViewsTestCase.test_signup_view_post_valid">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_signup_view_post_valid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test the signup view with valid data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;signup&#39;</span><span class="p">),</span> <span class="p">{</span>
+            <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="s1">&#39;newuser&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;email&#39;</span><span class="p">:</span> <span class="s1">&#39;newuser@example.com&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;password1&#39;</span><span class="p">:</span> <span class="s1">&#39;password123&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;password2&#39;</span><span class="p">:</span> <span class="s1">&#39;password123&#39;</span>
+        <span class="p">})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertRedirects</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;login&#39;</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="UserViewsTestCase.test_signup_view_post_password_mismatch">
+<a class="viewcode-back" href="../../core.html#core.tests.UserViewsTestCase.test_signup_view_post_password_mismatch">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_signup_view_post_password_mismatch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test the signup view with mismatched passwords.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">invalid_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">invalid_data</span><span class="p">[</span><span class="s1">&#39;password2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;mismatchpassword&#39;</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;signup&#39;</span><span class="p">),</span> <span class="n">invalid_data</span><span class="p">)</span>
+        <span class="n">messages</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">get_messages</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">wsgi_request</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="nb">any</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">message</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;Password do not match&#39;</span> <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">messages</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="UserViewsTestCase.test_signup_view_post_existing_email">
+<a class="viewcode-back" href="../../core.html#core.tests.UserViewsTestCase.test_signup_view_post_existing_email">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_signup_view_post_existing_email</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test signup with an already existing email.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;signup&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_data</span><span class="p">)</span>
+        <span class="n">messages</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">get_messages</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">wsgi_request</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="nb">any</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">message</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;Email already exists&#39;</span> <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">messages</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="UserViewsTestCase.test_signup_view_post_existing_username">
+<a class="viewcode-back" href="../../core.html#core.tests.UserViewsTestCase.test_signup_view_post_existing_username">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_signup_view_post_existing_username</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test signup with an already existing username.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;newemail@example.com&#39;</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;signup&#39;</span><span class="p">),</span> <span class="n">data</span><span class="p">)</span>
+        <span class="n">messages</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">get_messages</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">wsgi_request</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="nb">any</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">message</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;Username already taken&#39;</span> <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">messages</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="UserViewsTestCase.test_verify_view_valid_token">
+<a class="viewcode-back" href="../../core.html#core.tests.UserViewsTestCase.test_verify_view_valid_token">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_verify_view_valid_token</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test the verify view with a valid token.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">valid_token</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">())</span>
+        <span class="n">unique_username</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;testuser_</span><span class="si">{</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">()</span><span class="o">.</span><span class="n">hex</span><span class="si">}</span><span class="s1">&#39;</span>
+
+        <span class="n">user</span> <span class="o">=</span> <span class="n">get_user_model</span><span class="p">()</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create_user</span><span class="p">(</span>
+            <span class="n">username</span><span class="o">=</span><span class="n">unique_username</span><span class="p">,</span>
+            <span class="n">email</span><span class="o">=</span><span class="s1">&#39;test@example.com&#39;</span><span class="p">,</span>
+            <span class="n">password</span><span class="o">=</span><span class="s1">&#39;password123&#39;</span><span class="p">,</span>
+            <span class="n">email_token</span><span class="o">=</span><span class="n">valid_token</span><span class="p">,</span>
+            <span class="n">is_verified</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span>
+        
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;verify&#39;</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;token&#39;</span><span class="p">:</span> <span class="n">valid_token</span><span class="p">}))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertRedirects</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;quiz_home&#39;</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="UserViewsTestCase.test_verify_view_invalid_token">
+<a class="viewcode-back" href="../../core.html#core.tests.UserViewsTestCase.test_verify_view_invalid_token">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_verify_view_invalid_token</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test the verify view with an invalid token.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">invalid_token</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">())</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;verify&#39;</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;token&#39;</span><span class="p">:</span> <span class="n">invalid_token</span><span class="p">}))</span>
+        <span class="n">messages</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">get_messages</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">wsgi_request</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="nb">any</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">message</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;Invalid verification token&#39;</span> <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">messages</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="UserViewsTestCase.test_user_login_valid">
+<a class="viewcode-back" href="../../core.html#core.tests.UserViewsTestCase.test_user_login_valid">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_user_login_valid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test the login view with valid credentials.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;login&#39;</span><span class="p">),</span> <span class="p">{</span>
+            <span class="s1">&#39;email&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_data</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_data</span><span class="p">[</span><span class="s1">&#39;password1&#39;</span><span class="p">]</span>
+        <span class="p">})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertRedirects</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;quiz_home&#39;</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="UserViewsTestCase.test_user_login_invalid">
+<a class="viewcode-back" href="../../core.html#core.tests.UserViewsTestCase.test_user_login_invalid">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_user_login_invalid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test the login view with invalid credentials.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;login&#39;</span><span class="p">),</span> <span class="p">{</span>
+            <span class="s1">&#39;email&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_data</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="s1">&#39;wrongpassword&#39;</span>
+        <span class="p">})</span>
+        <span class="n">messages</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">get_messages</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">wsgi_request</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="nb">any</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">message</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;Username or password is incorrect&#39;</span> <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">messages</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="UserViewsTestCase.test_user_logout">
+<a class="viewcode-back" href="../../core.html#core.tests.UserViewsTestCase.test_user_logout">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_user_logout</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test the logout view.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user_data</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">],</span> <span class="n">password</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user_data</span><span class="p">[</span><span class="s1">&#39;password1&#39;</span><span class="p">])</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;logout&#39;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertRedirects</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;login&#39;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertNotIn</span><span class="p">(</span><span class="s1">&#39;_auth_user_id&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">session</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="TestSendEmailToken">
+<a class="viewcode-back" href="../../core.html#core.tests.TestSendEmailToken">[docs]</a>
+<span class="k">class</span> <span class="nc">TestSendEmailToken</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This class test the code of utils file</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="TestSendEmailToken.test_send_email_token_success">
+<a class="viewcode-back" href="../../core.html#core.tests.TestSendEmailToken.test_send_email_token_success">[docs]</a>
+    <span class="nd">@patch</span><span class="p">(</span><span class="s1">&#39;core.utils.send_mail&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_send_email_token_success</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mock_send_mail</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test the send_email_token function with a successful email send.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">mock_send_mail</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">email</span> <span class="o">=</span> <span class="s1">&#39;test@example.com&#39;</span>
+        <span class="n">token</span> <span class="o">=</span> <span class="s1">&#39;12345&#39;</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="n">send_email_token</span><span class="p">(</span><span class="n">email</span><span class="p">,</span> <span class="n">token</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">mock_send_mail</span><span class="o">.</span><span class="n">assert_called_once_with</span><span class="p">(</span>
+            <span class="s1">&#39;Your account needs to be verified&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;click on the link to verify http://127.0.0.1:8000/verify/12345&#39;</span><span class="p">,</span>
+            <span class="n">settings</span><span class="o">.</span><span class="n">EMAIL_HOST_USER</span><span class="p">,</span>
+            <span class="p">[</span><span class="n">email</span><span class="p">],</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="TestSendEmailToken.test_send_email_token_failure">
+<a class="viewcode-back" href="../../core.html#core.tests.TestSendEmailToken.test_send_email_token_failure">[docs]</a>
+    <span class="nd">@patch</span><span class="p">(</span><span class="s1">&#39;core.utils.send_mail&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_send_email_token_failure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mock_send_mail</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test the send_email_token function with a failure in email sending.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">mock_send_mail</span><span class="o">.</span><span class="n">side_effect</span> <span class="o">=</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;SMTP error&#39;</span><span class="p">)</span>
+        <span class="n">email</span> <span class="o">=</span> <span class="s1">&#39;test@example.com&#39;</span>
+        <span class="n">token</span> <span class="o">=</span> <span class="s1">&#39;12345&#39;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">send_email_token</span><span class="p">(</span><span class="n">email</span><span class="p">,</span> <span class="n">token</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">result</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Quiz_Portal.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -25,7 +25,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),  # Admin panel
     path('', include('core.urls')),  # Routes homepage to the core app
     path('blog/', include('blog.urls')),  # Routes '/blog/' to the blog app
-    path('quiz/', include('quiz.urls')),  
+    path('quiz/', include('quiz.urls')), 
+    path('accounts/', include('allauth.urls')), 
     path('profile/', include('User_Profile.urls')), #User Profile App
     path('participation/', include('participation.urls')),
     path('leaderboard/', include('leaderboard.urls')), #for leaderboard
