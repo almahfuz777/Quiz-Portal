@@ -2,9 +2,7 @@ alabaster==1.0.0
 asgiref==3.8.1
 babel==2.16.0
 certifi==2024.8.30
-charset-normalizer==3.3.2
 colorama==0.4.6
-Django==5.1.1
 docutils==0.21.2
 idna==3.10
 imagesize==1.4.1
@@ -23,10 +21,9 @@ sphinxcontrib-jquery==4.1
 sphinxcontrib-jsmath==1.0.1
 sphinxcontrib-qthelp==2.0.0
 sphinxcontrib-serializinghtml==2.0.0
-sqlparse==0.5.1
 tzdata==2024.2
 urllib3==2.2.3
-Pillow==11.0.0asgiref==3.8.1
+Pillow==11.0.0
 certifi==2024.8.30
 cffi==1.17.1
 charset-normalizer==3.4.0
