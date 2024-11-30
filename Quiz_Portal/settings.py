@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'blog',
     'quiz',
     'User_Profile',
+    'feedback',
 ]
 
 MIDDLEWARE = [

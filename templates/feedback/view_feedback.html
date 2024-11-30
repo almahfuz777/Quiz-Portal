@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}View Feedback{% endblock title %}
+{% block styles %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+{% endblock styles %}
+
+{% block content %}
+<div class="container my-5">
+    <!-- Feedback List -->
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            {% if feedbacks %}
+                <ul class="list-group">
+                    {% for feedback in feedbacks %}
+                        <li class="list-group-item">
+                            <h5 class="d-flex justify-content-between">
+                                <strong class="text-success">{{ feedback.participant.user.username }}</strong>
+                                <span class="text-muted small">on {{ feedback.created_at }}</span>
+                            </h5>
+                            <div class="mb-4 bg-success-subtle">
+                                <h5 class="ms-3">Feedback:</h5>
+                                <p class="ms-3 pb-2">{{ feedback.comment }}</p>
+                            </div>
+                            {% if feedback.content %}
+                                <div class="alert alert-info p-2">
+                                    <strong>Additional Content:</strong> {{ feedback.content }}
+                                </div>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-center text-muted">No feedback available yet.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Quiz Homepage Button -->
+    <div class="text-center mt-3">
+        <a href="{% url 'quiz_home' %}" class="btn btn-secondary">Quiz Homepage</a>
+    </div>
+</div>
+
+<!-- Include Bootstrap JS (Optional for interactivity) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+{% endblock content %}
