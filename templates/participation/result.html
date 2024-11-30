@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/result.css' %}">
+{% endblock %}
+
+{% block title %}Quiz Results{% endblock %}
+
+{% block content %}
+<h1>Quiz Result</h1>
+<p>Quiz: {{ quiz.title }}</p>
+<p>Your Score: {{ raw_score }} out of {{ total_questions }}</p>
+<p>Accuracy: {{ percentage_score }}%</p>
+
+<h2>Statistics</h2>
+<ul class="quiz-stats">
+    <li class="quiz-stats-item">Total Participants: {{ quiz_stats.total_participants }}</li>
+    <li class="quiz-stats-item">Highest Score: {{ quiz_stats.highest_score }}%</li>
+    <li class="quiz-stats-item">Average Score: {{ quiz_stats.average_score }}%</li>
+</ul>
+
+
+<a href="{% url 'quiz_home' %}" class="btn btn-primary">Return Home</a>
+{% endblock %}

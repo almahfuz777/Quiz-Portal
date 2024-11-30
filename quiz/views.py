@@ -7,7 +7,7 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth.hashers import check_password
 from datetime import timedelta, datetime
 from django.utils.timezone import make_aware
-from .models import Quiz, Question, Participant
+from .models import Quiz, Question
 from core.models import Tag
 
 @login_required

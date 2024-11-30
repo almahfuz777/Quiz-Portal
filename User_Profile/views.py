@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from quiz.models import Quiz, Participant
+from quiz.models import Quiz 
+from participation.models import Participant
 from django.contrib.auth import get_user_model
 
 User = get_user_model()

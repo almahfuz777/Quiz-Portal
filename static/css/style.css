@@ -60,7 +60,11 @@ body {
     background-color: #0056b3;
     border-radius: 5px;
 }
-
+.user-icon{
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+}
 /* Hero Section */
 .hero {
     text-align: center;

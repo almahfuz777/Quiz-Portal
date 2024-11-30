@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/participate.css' %}">
+{% endblock %}
+
+{% block title %}Participate in {{ quiz.title }}{% endblock %}
+
+{% block nav_items %}
+    <li><a href="{% url 'quiz_home' %}">Quizzes</a></li>
+    <li>
+        <a href="#">
+            <img src="{% static 'images/user_icon.png' %}" alt="User Icon" class="user-icon">
+            {{ user.email }}
+        </a>
+    </li>
+{% endblock %}
+
+{% block content %}
+<h1>Quiz: {{ quiz.title }}</h1>
+<p>{{ quiz.description }}</p>
+<p>Duration: {{ quiz.duration }}</p>
+
+<!-- Timer Display -->
+<div id="timerContainer" style="display: none;">
+    <h3>Time Remaining: <span id="countdown"></span></h3>
+</div>
+
+<!-- Confirmation Modal -->
+<div id="confirmationModal" class="modal">
+    <div class="modal-content">
+        <h3>Are you ready to start the quiz?</h3>
+        <button id="startQuizButton" class="btn btn-primary">Start Quiz</button>
+        <button id="cancelButton" class="btn btn-secondary">Cancel</button>
+    </div>
+</div>
+
+<!-- Quiz Form  -->
+<form id="quizForm" method="POST" style="display: none;">
+    {% csrf_token %}
+    {% for question in questions %}
+        <div class="question-container">
+            <h3>{{ question.question_no }}. {{ question.text }}</h3>
+            <label>
+                <input type="radio" name="selected_option_{{ question.question_no }}" value="A" required>
+                {{ question.option_a }}
+            </label>
+            <label>
+                <input type="radio" name="selected_option_{{ question.question_no }}" value="B">
+                {{ question.option_b }}
+            </label>
+            <label>
+                <input type="radio" name="selected_option_{{ question.question_no }}" value="C">
+                {{ question.option_c }}
+            </label>
+            <label>
+                <input type="radio" name="selected_option_{{ question.question_no }}" value="D">
+                {{ question.option_d }}
+            </label>
+        </div>
+    {% endfor %}
+    <button type="submit">Submit</button>
+</form>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Pass quiz duration to the JavaScript file (in seconds)
+    window.quizDuration = {{ quiz.duration.total_seconds }};
+    var quizHomeUrl = "{% url 'quiz_home' %}";
+</script>
+<script src="{% static 'js/participate.js' %}"></script>
+
+{% endblock %}

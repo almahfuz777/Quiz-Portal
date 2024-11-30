@@ -44,6 +44,8 @@ class Quiz(models.Model):
         
     def is_active(self):
         """Check if the quiz is active (not expired)."""
+        if self.expiry_date is None:
+            return True  # If no expiry date is set, the quiz is always active
         return now() < self.expiry_date
     
     def __str__(self):
@@ -93,16 +95,4 @@ class QuizStats(models.Model):
 
     def __str__(self):
         return f"Stats for {self.quiz.title}"
-
-class Participant(models.Model):
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="participations"
-    )
-    quiz = models.ForeignKey(
-        Quiz, on_delete=models.CASCADE, related_name="participants"
-    )
-    score = models.IntegerField(default=0)
-    participated_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"{self.user.email} - {self.quiz.title}"
+    
