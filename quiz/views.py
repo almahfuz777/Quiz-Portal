@@ -13,6 +13,16 @@ from participation.models import Participant
 
 @login_required
 def quiz_home(request):
+    """
+    Renders the quiz homepage, displaying available quizzes and tags, 
+    and applying optional filters such as quiz type, tags, and availability.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+
+    Returns:
+        HttpResponse: The rendered template displaying quizzes.
+    """
     quizzes = Quiz.objects.all()
     tags = Tag.objects.all()
     quiz_type = request.GET.get('quiz_type')
@@ -50,6 +60,20 @@ def quiz_home(request):
 
 @login_required
 def create_quiz(request):
+    """
+    Handles the creation of a new quiz. 
+
+    This view allows the user to provide details for the quiz such as 
+    the title, description, type, password (if private), duration, 
+    expiry date, and associated tags. It validates the input and creates 
+    the quiz object in the database.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+
+    Returns:
+        HttpResponse: Redirect to the 'set_questions' view or render the quiz creation form.
+    """
     if request.method == 'POST':
         title = request.POST.get('title')
         description = request.POST.get('description')
@@ -118,6 +142,20 @@ def create_quiz(request):
 
 @login_required
 def set_questions(request, quiz_id):
+    """
+    Handles the creation of questions for a quiz.
+
+    This view allows the user to submit a list of questions, options, and 
+    correct answers for the quiz. It validates the input and creates the 
+    associated Question objects in the database.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        quiz_id (UUID): The unique identifier for the quiz.
+
+    Returns:
+        HttpResponse: Redirects to the quiz home page or renders the set questions form.
+    """
     quiz = get_object_or_404(Quiz, quiz_id=quiz_id)
     
     if request.method == 'POST':

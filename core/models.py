@@ -5,15 +5,13 @@ from django.contrib.auth import get_user_model
 
 class User(AbstractUser):
     """
-    Custom user model that extends Django's AbstractUser model to support email-based authentication,
-    email verification, and social login integration.
+    Custom user model that extends Django's AbstractUser model to support email-based authentication, email verification, and social login integration.
 
     Attributes:
         email (EmailField): The user's email address, which must be unique.
         email_token (CharField): A token used for email verification, unique for each user.
         is_verified (BooleanField): A flag to indicate if the user's email has been verified.
-        created_quizzes (ManyToManyField): A many-to-many relationship with the Quiz model, 
-                                          indicating which quizzes the user has created.
+        created_quizzes (ManyToManyField): A many-to-many relationship with the Quiz model, indicating which quizzes the user has created.
 
     Methods:
         __str__: Returns the user's email as the string representation of the user.
