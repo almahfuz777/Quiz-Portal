@@ -9,12 +9,6 @@
 
 {% block nav_items %}
     <li><a href="{% url 'quiz_home' %}">Quizzes</a></li>
-    <li>
-        <a href="#">
-            <img src="{% static 'images/user_icon.png' %}" alt="User Icon" class="user-icon">
-            {{ user.email }}
-        </a>
-    </li>
 {% endblock %}
 
 {% block content %}

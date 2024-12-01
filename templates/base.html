@@ -28,8 +28,19 @@
                 {% block nav_items %}
                 <!--  nav items can go here -->
                 {% endblock %}
-                <li>
-                    <a href="{% url "logout" %}">Logout</a>
+
+                <!-- profile menu dropdown-->
+                <li class="profile-dropdown">
+                    <div class="user-dropdown-container">
+                        <a href="#" class="user-dropdown-toggle">
+                            <img src="{% static 'images/user_icon.png' %}" alt="User Icon" class="user-icon">
+                            {{ user.username }}
+                        </a>
+                        <ul class="user-dropdown-menu">
+                            <li><a href="{% url 'profile_home' %}">Profile</a></li>
+                            <li><a href="{% url 'logout' %}">Logout</a></li>
+                        </ul>
+                    </div>
                 </li>
             </ul>
         </div>

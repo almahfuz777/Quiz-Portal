@@ -9,19 +9,13 @@
 
 
 {% block nav_items %}
+    <li>
+        <a href="{% url 'chatbox_home' %}">
+        <img src="{% static 'images/chat_icon.png' %}" alt="Chat Icon" class="user-icon" style="width: 20px; height: 20px; margin:0"></a>
+    </li>
     <li><a href="{% url 'create_quiz' %}">Create Quiz</a></li>
-    <li><a href="{% url 'blog_list' %}">View Blogs</a></li>
-    <li><a href="{% url 'leaderboard' %}">Leader Board</a></li>
-    <li>
-        <a href="{% url 'profile_home' %}"> <!-- Redirect to profile home -->
-            <img src="{% static 'images/user_icon.png' %}" alt="User Icon" class="user-icon">
-            {{ user.email }}
-        </a>
-    </li>
-    {% comment %} Feedback button for user's submitted feedback {% endcomment %}
-    <li>
-        <a href="{% url 'my_feedback' %}" class="btn btn-info">My Feedback</a>
-    </li>
+    <li><a href="{% url 'blog_list' %}">Blogs</a></li>
+    <li><a href="{% url 'leaderboard' %}">LeaderBoard</a></li>
 {% endblock %}
 
 
@@ -75,13 +69,8 @@
                     <p><strong>Tags:</strong> {% for tag in quiz.tags.all %}{{ tag.name }}{% if not forloop.last %}, {% endif %}{% empty %}None{% endfor %}</p>
                 </div>
                 
+                <a href="{% url 'quiz_info' quiz.quiz_id %}" class="btn">Quiz-Info</a>
                 <a href="{% url 'participate' quiz.quiz_id %}" class="btn">Participate</a>
-                
-                <!-- Submit Feedback Button -->
-                <a href="{% url 'submit_feedback' quiz.quiz_id %}" class="btn btn-primary">Submit Feedback</a>
-                
-                <!-- View Feedback Button -->
-                <a href="{% url 'view_feedback' quiz.quiz_id %}" class="btn btn-secondary">View Feedback</a>
             </li>
         {% empty %}
             <p>No quizzes available right now.</p>

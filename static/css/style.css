@@ -116,3 +116,67 @@ body {
     width: 40%;
     border-radius: 15px;
 }
+
+/* Profile dropdown */
+/* Dropdown Container */
+.user-dropdown-container {
+    position: relative;
+    display: inline-block;
+    align-items: center;
+}
+
+/* Dropdown Toggle (User Icon and Email) */
+.user-dropdown-toggle {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #007bff;
+    cursor: pointer;
+}
+
+/* Dropdown Menu */
+.user-dropdown-menu {
+    display: none; /* Hidden by default */
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #007bff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    list-style: none;
+    padding: 0;
+    margin: 5px 0 0;
+    min-width: 200px;
+}
+
+/* Dropdown Menu Items */
+.user-dropdown-menu li {
+    margin: 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add box shadow */
+    border-radius: 5px; /* Slight rounding for items */
+    overflow: hidden; /* Ensure box shadow stays clean */
+    margin-bottom: 5px; /* Add spacing between items */
+}
+
+.user-dropdown-menu a {
+    display: block;
+    padding: 15px 15px;
+    text-decoration: none;
+    color: #333;
+    white-space: nowrap; /* Prevent wrapping */
+    justify-content: center;
+    text-align: center;
+}
+
+.user-dropdown-menu a:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+/* Show Dropdown on Hover */
+.user-dropdown-container:hover .user-dropdown-menu {
+    display: block;
+}
+

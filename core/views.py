@@ -146,4 +146,4 @@ def user_logout(request):
     :rtype: HttpResponse
     """
     logout(request)
-    return redirect('login')
+    return redirect('homepage')

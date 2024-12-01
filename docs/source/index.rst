@@ -22,3 +22,11 @@ documentation for details.
    :caption: Contents:
 
    modules
+   core
+   User_Profile
+   quiz
+   participation
+   blog
+   feedback
+   leaderboard
+   chatbox
