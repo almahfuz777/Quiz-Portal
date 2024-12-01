@@ -28,6 +28,38 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
+#Provider specific settings
+SOCIALACCOUNT_PROVIDERS ={
+    'github':{
+         'APP':{
+             'client_id' : 'Ov23li3CHAHL9AltFSWv',
+             'secret':'fd78fc01795437763a786f77d9450916a23f8b9e',
+             'key':''
+         },
+         'AUTH_PARAMS': {'scope': 'user:email'},  # req to github to provide the private email
+    },
+        'google': {
+        'APP': {
+            'client_id': '1008665267767-ovh8dm3om8stv3qhhli2suhsr2vkrjsd.apps.googleusercontent.com',
+            'secret': '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',
+            'key': '',
+        }
+    }
+}
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',  # Default backend
+    'allauth.account.auth_backends.AuthenticationBackend',  # Allauth backend
+)
+
+SITE_ID = 1  # Replace with your Site ID in the Django admin
+LOGIN_REDIRECT_URL = '/quiz/'  # Where to redirect after login
+LOGOUT_REDIRECT_URL = '/'  # Where to redirect after logout
+
+# Optional: Disable email confirmation
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
+ACCOUNT_EMAIL_REQUIRED = True
 
 
 # Application definition
@@ -46,6 +78,14 @@ INSTALLED_APPS = [
     'User_Profile',
     'participation',
     'leaderboard',
+
+    # Allauth apps
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.github',  # Add GitHub provider
+    'allauth.socialaccount.providers.google', # Add Google provider
 ]
 
 MIDDLEWARE = [
@@ -56,6 +96,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',  # Account middleware
 ]
 
 ROOT_URLCONF = 'Quiz_Portal.urls'
@@ -71,6 +112,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request',
             ],
         },
     },
@@ -140,4 +182,6 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'mohammed.mainuddin@northsouth.edu'
 EMAIL_HOST_PASSWORD = 'wmqo dbtr arsy qzpq'
 
-AUTH_USER_MODEL = 'core.User'  # Replace 'yourapp' with the name of your app
+AUTH_USER_MODEL = 'core.User'  
+
+SOCIALACCOUNT_ADAPTER = 'core.adapters.CustomSocialAccountAdapter'
