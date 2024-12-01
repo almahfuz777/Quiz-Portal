@@ -8,10 +8,43 @@ User = get_user_model()
 
 @login_required
 def profile_home(request):
+    """
+    View to display the user's profile homepage.
+
+    This view renders the main profile page for the logged-in user.
+
+    Parameters
+    ----------
+    request : HttpRequest
+        The request object used to generate the response.
+
+    Returns
+    -------
+    HttpResponse
+        A rendered response displaying the profile home page.
+    """
     return render(request, 'User_Profile/profile_home.html')
 
 @login_required
 def user_stats(request):
+    """
+    View to display the user's statistics, including their ranking and scores.
+
+    This view calculates and displays the user's rank based on the total 
+    score from all participations, the number of participations, and 
+    quizzes created by the user.
+
+    Parameters
+    ----------
+    request : HttpRequest
+        The request object used to generate the response.
+
+    Returns
+    -------
+    HttpResponse
+        A rendered response displaying the user's statistics, 
+        including rank, total score, and quiz count.
+    """
     user = request.user
 
     # Get all participations for ranking
@@ -43,6 +76,21 @@ def user_stats(request):
 
 @login_required
 def user_info(request):
+    """
+    View to display the user's information (username, email, bio, location, and profile picture).
+
+    This view retrieves the user's profile information and displays it.
+
+    Parameters
+    ----------
+    request : HttpRequest
+        The request object used to generate the response.
+
+    Returns
+    -------
+    HttpResponse
+        A rendered response displaying the user's profile information.
+    """
     user = request.user
     profile = user.profile  # Access the related Profile object
 
@@ -58,6 +106,23 @@ def user_info(request):
 
 @login_required
 def settings(request):
+    """
+    View to handle updating the user's profile settings.
+
+    This view allows the logged-in user to update their username, email, bio, 
+    location, date of birth, and profile picture. If a POST request is made, 
+    the user's information is updated and a success message is shown.
+
+    Parameters
+    ----------
+    request : HttpRequest
+        The request object used to generate the response, containing form data for updating user settings.
+
+    Returns
+    -------
+    HttpResponse
+        A rendered response displaying the settings page with updated user information.
+    """
     user = request.user
     profile = user.profile
     message = None
