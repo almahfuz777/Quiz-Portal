@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/chatbox.css' %}">
+{% endblock %}
+
+{% block title %}Chat Box{% endblock %}
+
+{% block content %}
+<div class="chatbox-container">
+    <h2>Chat Box</h2>
+    
+    <!-- Display existing messages -->
+    <div class="messages">
+      {% for message in messages %}
+        <div class="message">
+          <strong>{{ message.user.username }}</strong>: {{ message.content }}
+          <small class="timestamp">{{ message.timestamp }}</small>
+        </div>
+      {% endfor %}
+    </div>
+    
+    <!-- Form to send a new message -->
+    <form method="POST">
+      {% csrf_token %}
+      <textarea name="content" placeholder="Type a message..." rows="3" required></textarea>
+      <button type="submit" class="submit-btn">Send</button>
+    </form>
+</div>
+{% endblock %}
