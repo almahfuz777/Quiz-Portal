@@ -3,6 +3,10 @@
 
 {% block title %}View Feedback{% endblock %}
 
+{% block nav_items %}
+    <li><a href="{% url 'quiz_home' %}">Quizzes</a></li>
+{% endblock %}
+
 {% block content %}
 <div class="container my-5">
     <h2 class="text-center">Feedback for {{ quiz.title }}</h2>

@@ -1,0 +1,56 @@
+{% extends "base.html" %} 
+{% load static %} 
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/result.css' %}" />
+{% endblock %} 
+
+{% block title %}Quiz Info{% endblock %} 
+
+{% block nav_items %}
+    <li><a href="{% url 'quiz_home' %}">Quizzes</a></li>
+{% endblock %}
+
+{% block content %}
+<div class="quiz-stats">
+	<h1>{{ quiz.title }}</h1>
+	<p><strong>Description:</strong> {{ quiz.description }}</p>
+	<p><strong>Type:</strong> {{ quiz.get_quiz_type_display }}</p>
+	<p><strong>Duration:</strong> {{ formatted_duration }}</p>
+	<p>
+		<strong>Tags:</strong>
+		{% for tag in quiz.tags.all %} {{ tag.name }}{% if not forloop.last %},
+		{% endif %} {% empty %} None {% endfor %}
+	</p>
+
+	<p>
+		<strong>Expiry Date:</strong> {% if quiz.expiry_date %}{{quiz.expiry_date|date:"Y-m-d H:i:s" }}{% else %}undefined{% endif %}
+	</p>
+	<p><strong>Created At:</strong> {{ quiz.created_at|date:"Y-m-d H:i:s" }}</p>
+</div>
+
+<!-- Statistics Section -->
+<br />
+<h2>Quick Overview</h2>
+{% if quiz_stats %}
+<ul class="quiz-stats">
+	<li class="quiz-stats-item">
+		Total Participants: {{ quiz_stats.total_participants }}
+	</li>
+	<li class="quiz-stats-item">
+		Highest Score: {{ quiz_stats.highest_score|default:"N/A" }}%
+	</li>
+	<li class="quiz-stats-item">
+		Average Score: {{ quiz_stats.average_score|default:"N/A" }}%
+	</li>
+</ul>
+{% else %}
+<p>No statistics are available for this quiz yet.</p>
+{% endif %}
+
+<!-- View Feedbacks Button -->
+<a href="{% url 'view_feedback' quiz.quiz_id %}" class="btn btn-secondary">View Feedbacks</a>
+
+<a href="{% url 'participate' quiz.quiz_id %}" class="btn">Participate</a>
+<a href="{% url 'quiz_home' %}" class="btn btn-primary">Return Home</a>
+{% endblock %}

@@ -87,3 +87,32 @@ def submit_quiz(request, quiz):
         "participant": participant,
         "quiz_stats": quiz_stats,
     })
+
+
+@login_required
+def quiz_info(request, quiz_id):
+    """
+    Displays detailed information about a quiz.
+    """
+    quiz = get_object_or_404(Quiz, quiz_id=quiz_id)
+
+    # Format duration
+    def format_duration(duration):
+        total_seconds = int(duration.total_seconds())
+        hours, remainder = divmod(total_seconds, 3600)
+        minutes, seconds = divmod(remainder, 60)
+        if hours > 0:
+            return f"{hours}h {minutes}m {seconds}s"
+        return f"{minutes}m {seconds}s"
+
+    # Retrieve quiz statistics
+    quiz_stats = QuizStats.objects.filter(quiz=quiz).first()
+
+    # Prepare quiz data for rendering
+    context = {
+        "quiz": quiz,
+        "formatted_duration": format_duration(quiz.duration),
+        "quiz_stats": quiz_stats,  # Pass quiz stats to the template
+    }
+    return render(request, "participation/quiz_info.html", context)
+

@@ -8,12 +8,17 @@
 
 {% block title %}Profile{% endblock %}
 
+{% block nav_items %}
+    <li><a href="{% url 'quiz_home' %}"><-Quizzes</a></li>
+{% endblock %}
+
 {% block content %}
 <div class="main-container">
     <h1>Profile Section</h1>
     <ul>
         <li><a href="{% url 'user_stats' %}">User Stats</a></li>
         <li><a href="{% url 'user_info' %}">User Info</a></li>
+        <li><a href="{% url 'my_feedback' %}">Given Feedbacks</a></li>
         <li><a href="{% url 'settings' %}">Settings</a></li>
     </ul>
 </div>

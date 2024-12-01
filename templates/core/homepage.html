@@ -13,8 +13,28 @@
             <div class="container">
                 <a href="{% url 'homepage' %}" class="logo">Quiz Portal</a>
                 <ul class="nav-links">
+                    {% if user.is_authenticated %}
+                    <!-- Show these links when the user is logged in -->
+                    <li><a href="{% url 'quiz_home' %}">Quizzes</a></li>
+                    
+                    <!-- profile menu dropdown-->
+                    <li class="profile-dropdown">
+                        <div class="user-dropdown-container">
+                            <a href="#" class="user-dropdown-toggle">
+                                <img src="{% static 'images/user_icon.png' %}" alt="User Icon" class="user-icon">
+                                {{ user.email }}
+                            </a>
+                            <ul class="user-dropdown-menu">
+                                <li><a href="{% url 'profile_home' %}">Profile</a></li>
+                                <li><a href="{% url 'logout' %}">Logout</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    {% else %}
+                    <!-- Show login and sign up links when the user is NOT logged in -->
                     <li><a href="{% url 'login' %}">Login</a></li>
                     <li><a href="{% url 'signup' %}">Sign Up</a></li>
+                    {% endif %}
                 </ul>
             </div>
     </nav>

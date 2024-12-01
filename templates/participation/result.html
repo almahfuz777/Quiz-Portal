@@ -7,6 +7,10 @@
 
 {% block title %}Quiz Results{% endblock %}
 
+{% block nav_items %}
+    <li><a href="{% url 'quiz_home' %}">Quizzes</a></li>
+{% endblock %}
+
 {% block content %}
 <h1>Quiz Result</h1>
 <p>Quiz: {{ quiz.title }}</p>
@@ -21,5 +25,8 @@
 </ul>
 
 
+<!-- Write Feedback  -->
+<a href="{% url 'submit_feedback' quiz.quiz_id %}" class="btn btn-primary">Submit Feedback</a>
+                
 <a href="{% url 'quiz_home' %}" class="btn btn-primary">Return Home</a>
 {% endblock %}
