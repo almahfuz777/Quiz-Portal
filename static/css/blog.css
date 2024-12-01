@@ -1,0 +1,115 @@
+/* blog.css */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    color: #333;
+    font-size: 2rem;
+}
+
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.blog-details-container,
+.blog-list-container,
+.create-blog-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.blog-content {
+    margin: 20px 0;
+    font-size: 1.1rem;
+}
+
+.blog-footer {
+    margin-top: 30px;
+    font-size: 0.9rem;
+}
+
+.blog-footer .back-btn {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+}
+
+.blog-list-container h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.blog-list {
+    list-style: none;
+    padding: 0;
+}
+
+.blog-item {
+    margin: 10px 0;
+    font-size: 1.1rem;
+}
+
+.blog-item .blog-title {
+    font-weight: bold;
+    color: #333;
+}
+
+.blog-item .blog-author {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.create-btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.create-btn:hover {
+    background-color: #0056b3;
+}
+
+.create-blog-form label {
+    display: block;
+    margin: 10px 0 5px;
+}
+
+.create-blog-form input,
+.create-blog-form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.create-blog-form button {
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.create-blog-form button:hover {
+    background-color: #218838;
+}

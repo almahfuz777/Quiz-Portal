@@ -1,14 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ blog.title }}</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/blog.css' %}">
+{% endblock %}
+
+{% block title %}{{ blog.title }}{% endblock %}
+
+{% block content %}
+<div class="blog-details-container">
     <h1>{{ blog.title }}</h1>
-    <p>{{ blog.content }}</p>
-    <p>Written by: {{ blog.author.username }} on {{ blog.created_at }}</p>
-    <a href="{% url 'blog_list' %}">Back to Blogs</a>
-</body>
-</html>
+    <div class="blog-content">
+        <p>{{ blog.content }}</p>
+    </div>
+    <div class="blog-footer">
+        <p>cse327 by {{ blog.author.username }} on {{ blog.created_at }}</p>
+        <a href="{% url 'blog_list' %}" class="back-btn">Back to Blogs</a>
+    </div>
+</div>
+{% endblock %}

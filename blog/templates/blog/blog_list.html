@@ -1,20 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>All Blogs</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/blog.css' %}">
+{% endblock %}
+
+{% block title %}All Blogs{% endblock %}
+
+{% block content %}
+<div class="blog-list-container">
     <h1>All Blogs</h1>
-    <ul>
+    <ul class="blog-list">
         {% for blog in blogs %}
-        <li>
-            <a href="{% url 'blog_detail' blog.id %}">{{ blog.title }}</a> 
-            by {{ blog.author.username }}
+        <li class="blog-item">
+            <a href="{% url 'blog_detail' blog.id %}" class="blog-title">{{ blog.title }}</a> 
+            <span class="blog-author">by {{ blog.author.username }}</span>
         </li>
         {% endfor %}
     </ul>
-    <a href="{% url 'create_blog' %}">Create New Blog</a>
-</body>
-</html>
+    <a href="{% url 'create_blog' %}" class="create-btn">Create New Blog</a>
+</div>
+{% endblock %}
