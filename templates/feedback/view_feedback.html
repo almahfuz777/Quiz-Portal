@@ -1,0 +1,41 @@
+<!-- templates/feedback/view_feedback.html -->
+{% extends 'base.html' %}
+
+{% block title %}View Feedback{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="text-center">Feedback for {{ quiz.title }}</h2>
+    
+    <!-- Display message if no feedbacks are available -->
+    {% if no_feedback_message %}
+        <p class="text-center text-muted">{{ no_feedback_message }}</p>
+    {% else %}
+        <!-- Feedback List -->
+        <ul class="list-group">
+            {% for feedback in feedbacks %}
+                <li class="list-group-item">
+                    <h5 class="d-flex justify-content-between">
+                        <strong class="text-success">{{ feedback.participant.username }}</strong>
+                        <span class="text-muted small">on {{ feedback.created_at }}</span>
+                    </h5>
+                    <div class="mb-4 bg-success-subtle">
+                        <h5 class="ms-3">Feedback:</h5>
+                        <p class="ms-3 pb-2">{{ feedback.comment }}</p>
+                    </div>
+                    {% if feedback.content %}
+                        <div class="alert alert-info p-2">
+                            <strong>Additional Content:</strong> {{ feedback.content }}
+                        </div>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <!-- Quiz Homepage Button -->
+    <div class="text-center mt-3">
+        <a href="{% url 'quiz_home' %}" class="btn btn-secondary">Quiz Homepage</a>
+    </div>
+</div>
+{% endblock %}

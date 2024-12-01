@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block title %}Submit Feedback{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h2 class="text-center">Submit Feedback for {{ quiz.title }}</h2>
+        </div>
+        <div class="card-body">
+            <form method="post" class="needs-validation" novalidate>
+                {% csrf_token %}
+                <div class="mb-3">
+                    {{ form.as_p }}
+                </div>
+                <button type="submit" class="btn btn-success w-100">Submit Feedback</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap Modal for Alert -->
+<div class="modal fade" id="participationModal" tabindex="-1" aria-labelledby="participationModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="participationModalLabel">Participation Required</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        You must participate in the quiz before submitting feedback. Please take the quiz before providing feedback.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <a href="{% url 'quiz_home' %}" class="btn btn-primary">Go to Quizzes</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Pop-up notification for feedback submission -->
+{% if messages %}
+    <script>
+        {% for message in messages %}
+            alert("{{ message }}");
+        {% endfor %}
+    </script>
+{% endif %}
+
+<script>
+    // Check if the user has participated in the quiz
+    document.addEventListener('DOMContentLoaded', function () {
+        const isParticipant = {{ participant_exists|default:"false" }};
+        if (!isParticipant) {
+            // Show the participation modal if not a participant
+            var myModal = new bootstrap.Modal(document.getElementById('participationModal'), {
+                keyboard: false
+            });
+            myModal.show();
+            
+            // Prevent form submission
+            const feedbackForm = document.querySelector("form");
+            feedbackForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+            });
+        }
+    });
+</script>
+
+{% endblock %}

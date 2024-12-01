@@ -9,6 +9,7 @@ from datetime import timedelta, datetime
 from django.utils.timezone import make_aware
 from .models import Quiz, Question
 from core.models import Tag
+from participation.models import Participant
 
 @login_required
 def quiz_home(request):
@@ -37,9 +38,14 @@ def quiz_home(request):
         seconds = duration_seconds % 60
         quiz.formatted_duration = f"{hours:02}:{minutes:02}:{seconds:02}"
         
+    # Najifa's part for feedback button
+    participant = Participant.objects.filter(user=request.user).first()
+    participant_id = participant.participant_id if participant else None
+
     return render(request, 'quiz/quiz_home.html', {
         'quizzes': quizzes,
         'tags': tags,
+        'participant_id': participant_id,  # Pass the participant_id safely
     })
 
 @login_required

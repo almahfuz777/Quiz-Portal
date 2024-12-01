@@ -18,6 +18,10 @@
             {{ user.email }}
         </a>
     </li>
+    {% comment %} Feedback button for user's submitted feedback {% endcomment %}
+    <li>
+        <a href="{% url 'my_feedback' %}" class="btn btn-info">My Feedback</a>
+    </li>
 {% endblock %}
 
 
@@ -72,6 +76,12 @@
                 </div>
                 
                 <a href="{% url 'participate' quiz.quiz_id %}" class="btn">Participate</a>
+                
+                <!-- Submit Feedback Button -->
+                <a href="{% url 'submit_feedback' quiz.quiz_id %}" class="btn btn-primary">Submit Feedback</a>
+                
+                <!-- View Feedback Button -->
+                <a href="{% url 'view_feedback' quiz.quiz_id %}" class="btn btn-secondary">View Feedback</a>
             </li>
         {% empty %}
             <p>No quizzes available right now.</p>
