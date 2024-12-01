@@ -15,10 +15,5 @@ documentation for details.
    :maxdepth: 2
    :caption: Contents:
 
-.. newly added
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
-
    modules
+   quiz

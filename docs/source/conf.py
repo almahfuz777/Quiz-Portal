@@ -7,6 +7,12 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath('../../'))  # path to the directory where manage.py is situated(Quiz-Portal)
 
+# Set the Django settings module
+os.environ['DJANGO_SETTINGS_MODULE'] = 'Quiz_Portal.settings'
+# Setup Django
+import django
+django.setup()
+
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
