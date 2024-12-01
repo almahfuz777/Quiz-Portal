@@ -10,6 +10,8 @@
 
 {% block nav_items %}
     <li><a href="{% url 'create_quiz' %}">Create Quiz</a></li>
+    <li><a href="{% url 'blog_list' %}">View Blogs</a></li>
+    <li><a href="{% url 'leaderboard' %}">Leader Board</a></li>
     <li>
         <a href="{% url 'profile_home' %}"> <!-- Redirect to profile home -->
             <img src="{% static 'images/user_icon.png' %}" alt="User Icon" class="user-icon">
