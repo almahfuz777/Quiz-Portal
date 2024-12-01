@@ -1,7 +1,12 @@
-<!-- templates/feedback/my_feedback.html -->
 {% extends 'base.html' %}
+{% load static %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/my_feedback.css' %}"/link>
+{% endblock %}
 
 {% block title %}My Feedback{% endblock %}
+
 
 {% block content %}
 <div class="container my-5">
@@ -36,4 +41,4 @@
         <a href="{% url 'quiz_home' %}" class="btn btn-secondary">Quiz Homepage</a>
     </div>
 </div>
-{% endblock %}
+{% endblock %}

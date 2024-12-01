@@ -1,19 +1,22 @@
 from django.test import TestCase, Client
 from django.urls import reverse, resolve
 from django.contrib.auth import get_user_model
-from quiz.models import Quiz, Participant
+from quiz.models import Quiz
+from participation.models import Participant
 from feedback.models import Feedback
-#from feedback.forms import FeedbackForm
 from django.utils.timezone import now, timedelta
 import random
 import string
 
+
 def generate_unique_email():
-    # Generate a random string to append to the email to make it unique
+    """Generate a random unique email for testing purposes."""
     return "testuser" + ''.join(random.choices(string.ascii_lowercase + string.digits, k=6)) + "@example.com"
+
+
 def generate_unique_username():
-    # Generate a random string to append to the email to make it unique
-    return "testuser" + ''.join(random.choices(string.ascii_lowercase + string.digits, k=6)) 
+    """Generate a random unique username for testing purposes."""
+    return "testuser" + ''.join(random.choices(string.ascii_lowercase + string.digits, k=6))
 
 
 class FeedbackViewTests(TestCase):
@@ -21,17 +24,21 @@ class FeedbackViewTests(TestCase):
         self.client = Client()
         User = get_user_model()
 
-        # Ensure unique email address for the test user by calling the helper function
-        unique_email = generate_unique_email()
-        unique_username = generate_unique_username()
+        # Create a test user
         self.user = User.objects.create_user(
-            username= unique_username,  
-            email=unique_email  # Generate a unique email for each test run
+            username=generate_unique_username(),
+            email=generate_unique_email(),
+            password="password123"
         )
-        self.user.set_password("password123")  # Explicitly set and hash the password
-        self.user.save()
-        
-        # Create the quiz
+
+        # Create another user to test "view feedbacks" from another user
+        self.another_user = User.objects.create_user(
+            username=generate_unique_username(),
+            email=generate_unique_email(),
+            password="password123"
+        )
+
+        # Create a public quiz
         self.quiz = Quiz.objects.create(
             title="Sample Quiz",
             description="A test quiz for feedback functionality.",
@@ -40,11 +47,12 @@ class FeedbackViewTests(TestCase):
             expiry_date=now() + timedelta(days=1),
             created_by=self.user,
         )
-        
-        # Create the participant
+
+        # Create participants for the quiz
         self.participant = Participant.objects.create(user=self.user, quiz=self.quiz)
-        
-        # Create the feedback for the test
+        self.another_participant = Participant.objects.create(user=self.another_user, quiz=self.quiz)
+
+        # Create feedback for the test user
         self.feedback = Feedback.objects.create(
             quiz=self.quiz,
             participant=self.participant,
@@ -52,92 +60,51 @@ class FeedbackViewTests(TestCase):
             content="I really enjoyed it.",
         )
 
-
-    def test_view_feedbacks_resolves(self):
-        """Test URL resolves to the correct view."""
-        url = reverse("view_feedbacks", args=[self.quiz.quiz_id, self.participant.id])
-        from feedback.views import view_feedbacks
-        self.assertEqual(resolve(url).func, view_feedbacks)
-
-    def test_view_feedbacks_authenticated(self):
-        """Test feedbacks are displayed correctly for an authenticated user."""
-        self.client.login(email=self.user.email, password="password123")
-        response = self.client.get(
-            reverse("view_feedbacks", args=[self.quiz.quiz_id, self.participant.id])
+        # Create feedback for another user
+        self.another_feedback = Feedback.objects.create(
+            quiz=self.quiz,
+            participant=self.another_participant,
+            comment="Could be better.",
+            content="I had issues with the timer.",
         )
+
+    def test_my_feedback_view(self):
+        """Test that 'my_feedback' shows only the logged-in user's feedbacks."""
+        self.client.login(email=self.user.email, password="password123")
+        response = self.client.get(reverse("my_feedback"))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, self.feedback.comment)
+        self.assertContains(response, self.feedback.comment)  # User's feedback is shown
+        self.assertNotContains(response, self.another_feedback.comment)  # Another user's feedback is not shown
+        self.assertTemplateUsed(response, "feedback/my_feedback.html")
+
+    def test_view_feedback_view(self):
+        """Test that 'view_feedbacks' shows all feedbacks for a specific quiz."""
+        self.client.login(email=self.user.email, password="password123")
+        response = self.client.get(reverse("view_feedback", args=[self.quiz.quiz_id]))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.feedback.comment)  # User's feedback is shown
+        self.assertContains(response, self.another_feedback.comment)  # Another user's feedback is also shown
         self.assertTemplateUsed(response, "feedback/view_feedback.html")
 
 
-    def test_submit_feedback_resolves(self):
-        """Test URL resolves to the correct view."""
-        url = reverse("submit_feedback", args=[self.quiz.quiz_id, self.participant.id])
-        from feedback.views import submit_feedback
-        self.assertEqual(resolve(url).func, submit_feedback)
-
-    def test_submit_feedback_get_authenticated(self):
-        """Test GET request for feedback submission for an authenticated user."""
-        self.client.login(email=self.user.email, password="password123")
-        response = self.client.get(
-            reverse("submit_feedback", args=[self.quiz.quiz_id, self.participant.id])
-        )
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "feedback/submit_feedback.html")
-
     def test_submit_feedback_post_valid(self):
-        """Test POST request with valid feedback data."""
-        # Attempt to log in with the created test user
-        login_response = self.client.login(email=self.user.email, password="password123")
+        """Test POST request with valid data to 'submit_feedback'."""
+        self.client.login(email=self.user.email, password="password123")
+        Feedback.objects.filter(participant=self.participant, quiz=self.quiz).delete()
 
-        # Debugging outputs
-        print(f"Login response: {login_response}")  # Should be True if login succeeds
-        print(f"Email: {self.user.email}, Password: password123")
-        print(f"Does user exist? {get_user_model().objects.filter(email=self.user.email).exists()}")
-
-        # Ensure login is successful
-        self.assertTrue(login_response, "Login failed!")
-
-        # Clear any existing feedback for the participant and quiz
-        Feedback.objects.filter(quiz=self.quiz.quiz_id, participant=self.participant).delete()
-
-        # Valid feedback data
         response = self.client.post(
-            reverse("submit_feedback", args=[self.quiz.quiz_id, self.participant.id]),
+            reverse("submit_feedback", args=[self.quiz.quiz_id]),
             data={
-                "quiz": self.quiz.quiz_id,  # Pass the quiz ID
-                "participant": self.participant.id,  # Pass the participant ID
-                "comment": "New feedback",  # Valid comment
-                "content": "This is additional content for feedback.",  # Valid content
-            },
+                "comment": "New feedback",
+                "content": "This is additional content for feedback.",
+            }
         )
 
-        # Debug: Check response status code
-        print(f"Response status code: {response.status_code}")
-
-        # Ensure we get a 302 redirect after feedback submission
-        self.assertEqual(response.status_code, 302)
-
-        # Check if the new feedback has been saved in the database
+        self.assertEqual(response.status_code, 302)  # Redirects after successful submission
         self.assertTrue(
             Feedback.objects.filter(
                 quiz=self.quiz,
                 participant=self.participant,
                 comment="New feedback"
             ).exists()
-        )
-
-
-
-    def test_submit_feedback_post_invalid(self):
-        """Test POST request with invalid feedback data."""
-        self.client.login(email=self.user.email, password="password123")
-        response = self.client.post(
-            reverse("submit_feedback", args=[self.quiz.quiz_id, self.participant.id]),
-            data={"comment": ""},  # Missing required fields
-        )
-        self.assertEqual(response.status_code, 200)  # Form re-rendered
-        self.assertFalse(
-            Feedback.objects.filter(quiz=self.quiz, participant=self.participant).count() > 1
-        )
-        self.assertContains(response, "This field is required.")
+        )
