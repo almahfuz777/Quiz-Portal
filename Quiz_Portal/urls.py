@@ -30,4 +30,5 @@ urlpatterns = [
     path('profile/', include('User_Profile.urls')), #User Profile App
     path('participation/', include('participation.urls')),
     path('leaderboard/', include('leaderboard.urls')), #for leaderboard
+    path('',include('feedback.urls')),
 ]

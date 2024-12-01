@@ -78,6 +78,7 @@ INSTALLED_APPS = [
     'User_Profile',
     'participation',
     'leaderboard',
+    'feedback',
 
     # Allauth apps
     'django.contrib.sites',
