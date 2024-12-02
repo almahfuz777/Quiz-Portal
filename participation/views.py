@@ -7,7 +7,19 @@ from .models import Participant, Response
 
 @login_required
 def participate(request, quiz_id):
-    """Handles participation in a quiz."""
+    """
+    Handles participation in a quiz. Ensures that the quiz is active and the user
+    has not already participated. If the quiz is active and the user has not participated,
+    it renders the quiz participation form.
+    
+    Args:
+        request: The HTTP request object.
+        quiz_id: The unique identifier for the quiz.
+
+    Returns:
+        A rendered response containing the quiz participation interface or a redirection to
+        the quiz home page if the quiz has expired or the user has already participated.
+    """
     quiz = get_object_or_404(Quiz, quiz_id=quiz_id)
 
     # Ensure the quiz is active
@@ -21,8 +33,20 @@ def participate(request, quiz_id):
         messages.warning(request, "You have already participated in this quiz.")
         return redirect('quiz_home')
 
+    # If it's a private quiz, verify the password
+    if quiz.quiz_type == 'private':
+        if request.method == 'POST' and 'password' in request.POST:
+            provided_password = request.POST['password']
+            if not quiz.check_password(provided_password):
+                messages.error(request, "Incorrect password. Please try again.")
+                return redirect('participate', quiz_id=quiz.quiz_id)
+        elif request.method == 'GET' or 'password' not in request.POST:
+            return render(request, 'participation/private_quiz_verification.html', {
+                'quiz': quiz
+            })
+
     # If it's a POST request, handle quiz submission
-    if request.method == 'POST':
+    if request.method == 'POST' and 'password' not in request.POST:
         return submit_quiz(request, quiz)
 
     questions = quiz.questions.all()
@@ -37,7 +61,19 @@ def participate(request, quiz_id):
 
 @login_required
 def submit_quiz(request, quiz):
-    """Processes quiz submission and calculates scores."""
+    """
+    Processes the quiz submission and calculates the participant's score. It creates or retrieves
+    a participant record, saves the responses, calculates the raw and percentage score, and updates
+    quiz statistics.
+
+    Args:
+        request: The HTTP request object.
+        quiz: The quiz object that the user is participating in.
+
+    Returns:
+        A rendered response displaying the result page with the raw score, percentage score,
+        and quiz statistics.
+    """
     user = request.user
     participant, created = Participant.objects.get_or_create(
         user=user, quiz=quiz, defaults={"start_time": now()}
@@ -92,12 +128,30 @@ def submit_quiz(request, quiz):
 @login_required
 def quiz_info(request, quiz_id):
     """
-    Displays detailed information about a quiz.
+    Displays detailed information about a specific quiz, including its title, description, 
+    formatted duration, and associated statistics. The function calculates the duration in a
+    human-readable format and retrieves the quiz statistics.
+
+    Args:
+        request: The HTTP request object.
+        quiz_id: The unique identifier for the quiz.
+
+    Returns:
+        A rendered response containing the quiz information, including duration and statistics.
     """
     quiz = get_object_or_404(Quiz, quiz_id=quiz_id)
 
     # Format duration
     def format_duration(duration):
+        """
+        Converts the duration of the quiz from timedelta format to a human-readable string.
+        
+        Args:
+            duration: The duration of the quiz in timedelta format.
+        
+        Returns:
+            A formatted string representing the duration in hours, minutes, and seconds.
+        """
         total_seconds = int(duration.total_seconds())
         hours, remainder = divmod(total_seconds, 3600)
         minutes, seconds = divmod(remainder, 60)
