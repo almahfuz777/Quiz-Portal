@@ -107,4 +107,4 @@ class FeedbackViewTests(TestCase):
                 participant=self.participant,
                 comment="New feedback"
             ).exists()
-        )
+        )
