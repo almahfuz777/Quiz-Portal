@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block title %}Verification|Private Quiz{{ quiz.title }}{% endblock %}
+
+{% block nav_items %}
+    <li><a href="{% url 'quiz_home' %}">Quizzes</a></li>
+{% endblock %}
+
+{% block content %}
+<div class="password-container">
+    <h2 class="quiz-title">Enter Password for "{{ quiz.title }}"</h2>
+    <form method="post" action="{% url 'participate' quiz.quiz_id %}" class="password-form">
+        {% csrf_token %}
+        <label for="password" class="password-label">Password:</label>
+        <input type="password" id="password" name="password" class="password-input" required>
+        <button type="submit" class="submit-button">Submit</button>
+    </form>
+</div>
+
+<style>
+    .password-container {
+        width: 100%;
+        max-width: 400px;
+        margin: 50px auto;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        background-color: #f9f9f9;
+        text-align: center;
+    }
+
+    .quiz-title {
+        font-size: 1.5em;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    .password-form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .password-label {
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .password-input {
+        width: 100%;
+        padding: 10px;
+        font-size: 1em;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .submit-button {
+        padding: 10px 20px;
+        font-size: 1em;
+        color: #fff;
+        background-color: #007bff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .submit-button:hover {
+        background-color: #0056b3;
+    }
+</style>
+{% endblock %}

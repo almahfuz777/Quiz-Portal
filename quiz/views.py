@@ -101,17 +101,19 @@ def create_quiz(request):
                 return HttpResponse("Invalid expiry date format.", status=400)
         else:
             expiry_date = None  # Set to None if not provided
-
-        quiz = Quiz.objects.create(
-            title=title,
-            description=description,
-            quiz_type=quiz_type,
-            password=password,
-            duration=duration_timedelta,
-            expiry_date=expiry_date,
-            can_view_score_immediately=can_view_score,
-            created_by=request.user,  # Associate the quiz with the user
-        )
+        try:
+            quiz = Quiz.objects.create(
+                title=title,
+                description=description,
+                quiz_type=quiz_type,
+                password=password,
+                duration=duration_timedelta,
+                expiry_date=expiry_date,
+                can_view_score_immediately=can_view_score,
+                created_by=request.user,  # Associate the quiz with the user
+            )
+        except ValidationError as e:
+            return HttpResponse(e.message, status=400)
         
         # Handle tag creation or selection
         if new_tags:

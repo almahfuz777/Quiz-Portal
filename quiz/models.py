@@ -4,6 +4,7 @@ import uuid
 from django.utils.timezone import now
 from django.contrib.auth.hashers import make_password, check_password
 from datetime import timedelta
+from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 from core.models import Tag
 
@@ -66,10 +67,15 @@ class Quiz(models.Model):
             ``*args``: Variable length argument list.
             ``**kwargs``: Arbitrary keyword arguments.
         """
-        # Hash password if it's private
-        if self.quiz_type == 'private' and self.password and not self.pk:
+        # Enforce password requirement for private quizzes
+        if self.quiz_type == self.PRIVATE and not self.password:
+            raise ValidationError("A password is required for private quizzes.")
+        
+        # Hash password if it's private and password is set
+        if self.quiz_type == Quiz.PRIVATE and self.password:
             self.password = make_password(self.password)
-        super().save(*args, **kwargs)
+        
+        super().save(*args, **kwargs)  # Call the parent save method
 
     def check_password(self, raw_password):
         """

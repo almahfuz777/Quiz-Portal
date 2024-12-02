@@ -33,8 +33,20 @@ def participate(request, quiz_id):
         messages.warning(request, "You have already participated in this quiz.")
         return redirect('quiz_home')
 
+    # If it's a private quiz, verify the password
+    if quiz.quiz_type == 'private':
+        if request.method == 'POST' and 'password' in request.POST:
+            provided_password = request.POST['password']
+            if not quiz.check_password(provided_password):
+                messages.error(request, "Incorrect password. Please try again.")
+                return redirect('participate', quiz_id=quiz.quiz_id)
+        elif request.method == 'GET' or 'password' not in request.POST:
+            return render(request, 'participation/private_quiz_verification.html', {
+                'quiz': quiz
+            })
+
     # If it's a POST request, handle quiz submission
-    if request.method == 'POST':
+    if request.method == 'POST' and 'password' not in request.POST:
         return submit_quiz(request, quiz)
 
     questions = quiz.questions.all()
