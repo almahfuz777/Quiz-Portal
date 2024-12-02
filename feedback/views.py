@@ -10,6 +10,18 @@ from participation.models import Participant
 def submit_feedback(request, quiz_id):
     """
     Handles feedback submission for a quiz by a participant.
+
+    If the user has not participated in the quiz, they are redirected 
+    with an error message. If feedback has already been submitted, 
+    a warning is shown. If the user is allowed to submit feedback, 
+    it is saved and a success message is displayed.
+
+    Args:
+        request: The HTTP request object.
+        quiz_id: The ID of the quiz for which feedback is being submitted.
+
+    Returns:
+        Renders the feedback submission page or redirects based on the form submission.
     """
     quiz = get_object_or_404(Quiz, quiz_id=quiz_id)
     
@@ -17,7 +29,6 @@ def submit_feedback(request, quiz_id):
     try:
         participant = Participant.objects.get(user=request.user, quiz=quiz)
     except Participant.DoesNotExist:
-        # If no participant found, show an alert message and redirect
         messages.error(request, "You must participate in the quiz before submitting feedback.")
         return redirect('quiz_home')
     
@@ -27,7 +38,7 @@ def submit_feedback(request, quiz_id):
         messages.warning(request, "You have already submitted feedback for this quiz.")
         return redirect('quiz_home')
 
-    # If it's a POST request, handle the form submission
+    # Handle POST request with valid feedback form
     if request.method == 'POST':
         form = FeedbackForm(request.POST)
         if form.is_valid():
@@ -47,6 +58,13 @@ def submit_feedback(request, quiz_id):
 def view_feedback(request, quiz_id):
     """
     Displays all feedbacks for a specific quiz (from all participants).
+
+    Args:
+        request: The HTTP request object.
+        quiz_id: The ID of the quiz for which feedback is being viewed.
+
+    Returns:
+        Renders the view feedback page, showing all feedback for the quiz.
     """
     quiz = get_object_or_404(Quiz, quiz_id=quiz_id)
     
@@ -65,13 +83,25 @@ def view_feedback(request, quiz_id):
 
 @login_required
 def my_feedback(request):
+    """
+    Displays feedback submitted by the logged-in user for the quizzes they participated in.
+
+    If the user has not participated in any quizzes or has not submitted feedback,
+    an appropriate message is displayed.
+
+    Args:
+        request: The HTTP request object.
+
+    Returns:
+        Renders the my feedback page, showing feedback submitted by the logged-in user.
+    """
     # Fetch all participants associated with the logged-in user
     participants = Participant.objects.filter(user=request.user)
 
     if participants.count() == 0:
-        # If no participants found, we can display a "No feedback" message
+        # If no participants found, display a "No feedback" message
         no_feedback_message = "You have not participated in any quizzes."
-        return render(request, 'feedback/view_feedback.html', {
+        return render(request, 'feedback/my_feedback.html', {
             'no_feedback_message': no_feedback_message,
         })
     
@@ -81,7 +111,7 @@ def my_feedback(request):
     # If there are no feedbacks, display a message
     no_feedback_message = "No feedback available for the quizzes you've participated in." if not feedbacks else ""
 
-    return render(request, 'feedback/view_feedback.html', {
+    return render(request, 'feedback/my_feedback.html', {
         'feedbacks': feedbacks,
         'no_feedback_message': no_feedback_message,
-    })
+})
