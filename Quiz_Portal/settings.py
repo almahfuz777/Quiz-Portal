@@ -32,16 +32,16 @@ ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 SOCIALACCOUNT_PROVIDERS ={
     'github':{
          'APP':{
-             'client_id' : 'Ov23li3CHAHL9AltFSWv',
-             'secret':'fd78fc01795437763a786f77d9450916a23f8b9e',
+             'client_id' : '', #change it with you own
+             'secret':'',    #change it with you own
              'key':''
          },
-         'AUTH_PARAMS': {'scope': 'user:email'},  # req to github to provide the private email
+         'AUTH_PARAMS': {'scope': 'user:email'}, 
     },
         'google': {
         'APP': {
-            'client_id': '1008665267767-ovh8dm3om8stv3qhhli2suhsr2vkrjsd.apps.googleusercontent.com',
-            'secret': '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',
+            'client_id': '', #change it with you own
+            'secret': '',    #change it with you own
             'key': '',
         }
     }
