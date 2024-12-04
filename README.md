@@ -60,6 +60,7 @@ Quiz Portal is a web-based platform that allows users to create, participate in,
 - Database: SQLite (lightweight database included with Django by default)
 - Documentation: Sphinx (used for generating project documentation)
 - Testing: Django's built-in testing framework (ensures application reliability and correctness)
+- Coding Standard: pep8
   
 # Project Structure
 ```txt
