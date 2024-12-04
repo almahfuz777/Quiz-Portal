@@ -36,16 +36,18 @@ Quiz Portal is a web-based platform that allows users to create, participate in,
      source .venv/bin/activate  # For Linux/Mac
      .venv\Scripts\activate     # For Windows     .venv\
      ```
-    
-  3. Install Dependencies
+  3. Update the settings.py in Quiz_Portal with your own app's client_id, secret
+      ![Screenshot of settings.py of Quiz Portal](static/images/settings.png "Quiz Portal settings.py")
+
+  4. Install Dependencies
       ```py
       pip install -r requirements.txt
       ```
-  4. Run Database Migrations
+  5. Run Database Migrations
       ```py
       python manage.py migrate
       ```
-  5. Start Development Server
+  6. Start Development Server
       ```py
       python manage.py runserver
       ```
