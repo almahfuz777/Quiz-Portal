@@ -134,7 +134,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'mohammed.mainuddin@northsouth.edu'
-EMAIL_HOST_PASSWORD = 'wmqo dbtr arsy qzpq'
+EMAIL_HOST_USER = ' ' # update it with your own
+EMAIL_HOST_PASSWORD = ' ' # update it with your own
 
 AUTH_USER_MODEL = 'core.User'  # Replace 'yourapp' with the name of your app
