@@ -44,6 +44,8 @@ Quiz Portal is a web-based platform that allows users to create, participate in,
   4. Update the settings.py in Quiz_Portal with your own app's client_id, secret
      
       ![Screenshot of settings.py of Quiz Portal](static/images/settings.png "Quiz Portal settings.py")
+      
+      ![Screenshot of settings.py of Quiz_Portal](static/images/settings(email_generate).png "Quiz Portal settings.py")
      
   5. Run Database Migrations
       ```py
